@@ -34,9 +34,39 @@ router.post("/persons", function (req, res) {
     })
 });
 
+router.post("/ratings", function (req, res) {
+    var newRating = req.body;
+    rating.createRating(newRating, function (err,newRating) {
+        if (err) {
+            console.log('Error Inserting New Rating');
+            if (err.name === 'ValidationError') {
+                for (field in err.errors) {
+                    console.log(err.errors[field].message);
+                }
+            }
+            res.sendStatus(400);
+        }
+        else {
+            res.json(newRating);
+        }
+    })
+});
+
+
+
+router.get('/ratings', function (req, res) {
+    rating.getRatings(function (err, ratings) {
+        if (err) {
+            res.sendStatus(err.message);
+        }
+        res.json(ratings);
+    })
+});
+
+
 //GET movies
 router.get('/movies', function (req, res) {
-    person.getPersons(function (err, movies) {
+    movie.getMovies(function (err, movies) {
         if (err) {
             res.sendStatus(err.message);
         }
@@ -47,7 +77,7 @@ router.get('/movies', function (req, res) {
 //POST movies(add movie)
 router.post("/movies", function (req, res) {
     var movie = req.body;
-    movie.createMovie(user, function (err,newMovie) {
+    movie.createMovie(movie, function (err,newMovie) {
         if (err) {
             console.log('Error Inserting New Movie');
             if (err.name === 'ValidationError') {
@@ -62,6 +92,9 @@ router.post("/movies", function (req, res) {
         }
     })
 });
+
+
+
 
 
 

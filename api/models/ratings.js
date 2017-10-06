@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-
+var integer = 0.0;
 var ratingSchema = new mongoose.Schema({
     userId:{
         type: String,
@@ -10,16 +10,21 @@ var ratingSchema = new mongoose.Schema({
         required: true
     },
     rating:{
-        type: String,
+        type: Number,
+        exclusiveMaximum: 5,
+        exclusiveMinimum: 0.5,
+        maximum: 5,
+        minimum: 0,
         required: true
+
     }
 });
 
-var rating = module.exports = mongoose.model('ratings', ratingSchema);
+var ratingTool = module.exports = mongoose.model('ratings', ratingSchema);
 
-module.exports.createRating = function (userId,movieId,callback) {
+module.exports.createRating = function (rating,callback) {
     try {
-        rating.create(userId,movieId, callback);
+        ratingTool.create(rating, callback);
     }
     catch (err){
         if(err.message === "ValidatorError"){
@@ -31,3 +36,8 @@ module.exports.createRating = function (userId,movieId,callback) {
     }
 
 }
+
+module.exports.getRatings = function (callback, limit) {
+    ratingTool.find(callback).limit(limit);
+}
+
