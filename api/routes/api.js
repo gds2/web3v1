@@ -15,6 +15,17 @@ router.get('/persons', function (req, res) {
     })
 });
 
+
+router.get('/persons/:_id', function (req, res) {
+    person.getPersonById(req.params._id,function (err, person) {
+        if (err) {
+            res.sendStatus(err.message);
+        }
+        res.json(person);
+    })
+});
+
+
 //POST persons
 router.post("/persons", function (req, res) {
     var user = req.body;

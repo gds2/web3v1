@@ -46,3 +46,7 @@ module.exports.createPerson = function (user,callback) {
     }
 
 }
+
+module.exports.getPersonById = function(callback,id){
+    person.findById(callback,id);
+}
