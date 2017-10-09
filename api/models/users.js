@@ -1,23 +1,23 @@
 var mongoose = require('mongoose');
 var personSchema = new mongoose.Schema({
-    name:{
+    name: {
         type: String,
         required: true
     },
-    lastname:{
+    lastname: {
         type: String,
         required: true
     }
     ,
-    preposition:{
+    preposition: {
         type: String,
         required: false
     },
-    username:{
+    username: {
         type: String,
         required: true
     },
-    password:{
+    password: {
         type: String,
         required: true
     }
@@ -30,21 +30,19 @@ module.exports.getPersons = function (callback, limit) {
     person.find(callback).select("-password").limit(limit);
 }
 
-module.exports.createPerson = function (user,callback) {
-    try {
-        person.create(user, callback);
-    }
-    catch (err){
-        if(err.message === "ValidatorError"){
-
+module.exports.createPerson = function (user, callback) {
+    person.find({username: user.username}, function (err, docs) {
+        if (docs.length) {
+            callback("Username already exists", null);
         }
-        else{
-
+        else {
+            person.create(user, callback);
         }
-    }
-
+    });
 }
 
-module.exports.getPersonById = function(callback,id){
-    person.findById(callback,id);
+
+module.exports.getPersonById = function (callback, id) {
+    person.findById(callback, id);
 }
+

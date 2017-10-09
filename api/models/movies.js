@@ -66,7 +66,18 @@ controlRating = function(userid,rating) {
 }
 
 
-module.exports.createRating = function (movieid,rating, callback) {
-    moviesTool.findOneAndUpdate({"imdb": movieid}, {$push: {"ratings": rating}},callback)
+module.exports.createRating = function (movieid, userId, ratingAmount, callback) {
+    if (typeof userId != 'undefined' && typeof ratingAmount != 'undefined' && typeof ratingAmount === "number") {
+        if (ratingAmount > 0.4 && ratingAmount < 5.1) {
+            var newRating = {"userId": userId, "rating": ratingAmount};
+            moviesTool.findOneAndUpdate({"imdb": movieid}, {$push: {"ratings": newRating}}, callback)
+        }
+        else{
+            callback(400);
+        }
+    }
+    else {
+        callback(400);
+    }
 }
 

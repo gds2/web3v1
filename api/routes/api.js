@@ -21,7 +21,7 @@ router.get('/persons/:_id', function (req, res) {
         if (err) {
             res.sendStatus(err.message);
         }
-        else if(person === null){
+        else if (person === null) {
             res.sendStatus(404);
         }
         else {
@@ -36,12 +36,6 @@ router.post("/persons", function (req, res) {
     var user = req.body;
     person.createPerson(user, function (err, user) {
         if (err) {
-            console.log('Error Inserting New Data');
-            if (err.name === 'ValidationError') {
-                for (field in err.errors) {
-                    console.log(err.errors[field].message);
-                }
-            }
             res.sendStatus(400);
         }
         else {
@@ -52,38 +46,20 @@ router.post("/persons", function (req, res) {
 
 /**
  * Posts or edit a rating
- * This one is a bit messy because the validation from the rating schema isnt working corrrectly. Thats why all the validation is done in here
+ * This one is a bit messy because the validation from the rating schema isnt working correctly. Thats why all the validation is done in here
  */
 router.post('/ratings/:imdb', function (req, res) {
     var userId = req.body.userId;
     var ratingAmount = req.body.rating;
-    //Check if the
-    if (typeof userId != 'undefined' && typeof ratingAmount != 'undefined' && typeof ratingAmount === "number") {
-        if (ratingAmount > 0.4 && ratingAmount < 5.1) {
-            var newRating = {"userId": req.body.userId, "rating": req.body.rating};
-            var jjj = req.params.imdb;
-            movie.createRating(jjj, newRating, function (err, newRating) {
-                if (err) {
-                    console.log('Error Inserting New Rating');
-                    if (err.name === 'ValidationError') {
-                        for (field in err.errors) {
-                            console.log(err.errors[field].message);
-                        }
-                    }
-                    res.sendStatus(400);
-                }
-                else {
-                    res.json(newRating);
-                }
-            })
-        }
-        else{
+    var jjj = req.params.imdb;
+    movie.createRating(jjj, userId, ratingAmount, function (err, newRating) {
+        if (err) {
             res.sendStatus(400);
         }
-    }
-    else {
-        res.sendStatus(400);
-    }
+        else {
+            res.json(newRating);
+        }
+    })
 });
 
 
