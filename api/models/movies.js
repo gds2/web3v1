@@ -6,10 +6,7 @@ var ratingSchema = new mongoose.Schema({
     },
     rating: {
         type: Number,
-        max: 5,
-        min: 0.5,
         required: true
-
     }
 });
 var movieSchema = new mongoose.Schema({
@@ -37,14 +34,12 @@ var movieSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    ratings: {
-        ratings: ratingSchema
-    }
+    ratings: [ratingSchema]
+
 
 });
 
 var moviesTool = module.exports = mongoose.model('movies', movieSchema);
-
 module.exports.getMovies = function (callback, limit) {
     movie.find(callback).limit(limit);
 }
@@ -64,19 +59,14 @@ module.exports.createMovies = function (movie, callback) {
 
 }
 
-
-module.exports.createRating = function (rating,movieid, callback) {
-
-    try {
-        moviesTool.findOneAndUpdate({"imdb": movieid}, {$addToSet: {"ratings": rating}},callback)
+controlRating = function(userid,rating) {
+    if(userid === undefined || rating === undefined){
+        throw err;
     }
-    catch (err) {
-        if (err.message === "ValidatorError") {
-
-        }
-        else {
-
-        }
-    }
-
 }
+
+
+module.exports.createRating = function (movieid,rating, callback) {
+    moviesTool.findOneAndUpdate({"imdb": movieid}, {$push: {"ratings": rating}},callback)
+}
+
