@@ -45,9 +45,9 @@ router.post("/persons", function (req, res) {
     })
 });
 
-router.post("/ratings", function (req, res) {
-    var newRating = req.body;
-    rating.createRating(newRating, function (err,newRating) {
+router.post('/ratings/:imdb', function (req, res) {
+    var newRating = [req.body];
+    movie.createRating(newRating,req.params.imdb,function (err,newRating) {
         if (err) {
             console.log('Error Inserting New Rating');
             if (err.name === 'ValidationError') {
