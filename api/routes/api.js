@@ -85,12 +85,13 @@ router.get('/movies', function (req, res) {
     })
 });
 
-//POST movies(add movie)
+
+//POST movies
 router.post("/movies", function (req, res) {
-    var movie = req.body;
-    movie.createMovie(movie, function (err,newMovie) {
+    var newMovie = req.body;
+    movie.createMovies(newMovie, function (err,movie) {
         if (err) {
-            console.log('Error Inserting New Movie');
+            console.log('Error Inserting New Data');
             if (err.name === 'ValidationError') {
                 for (field in err.errors) {
                     console.log(err.errors[field].message);
@@ -99,11 +100,10 @@ router.post("/movies", function (req, res) {
             res.sendStatus(400);
         }
         else {
-            res.json(newMovie);
+            res.json(movie);
         }
     })
 });
-
 
 
 
