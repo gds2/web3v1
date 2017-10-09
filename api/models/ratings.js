@@ -16,7 +16,6 @@ var ratingSchema = new mongoose.Schema({
         maximum: 5,
         minimum: 0,
         required: true
-
     }
 });
 

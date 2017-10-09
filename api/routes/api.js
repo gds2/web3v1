@@ -46,7 +46,15 @@ router.post("/persons", function (req, res) {
 });
 
 router.post('/ratings/:imdb', function (req, res) {
-    var newRating = [req.body];
+    var newRating = req.body;
+    var rrr = new Array(2);
+    var count = 0;
+    for(var key in newRating){
+        if(newRating.hasOwnProperty(key)){
+            rrr[count] = newRating[key];
+            count++;
+        }
+    }
     movie.createRating(newRating,req.params.imdb,function (err,newRating) {
         if (err) {
             console.log('Error Inserting New Rating');
