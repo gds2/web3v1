@@ -18,25 +18,24 @@ router.get('/persons', function (req, res) {
 });
 
 router.get('/persons/:_id', function (req, res) {
-    person.getPersonById(req.params._id,function (err, person) {
+    person.getPersonById(req.params._id, function (err, person) {
         if (err) {
             res.sendStatus(err.message);
         }
-        res.json(person);
+        else if (person === null) {
+            res.sendStatus(404);
+        }
+        else {
+            res.json(person);
+        }
     })
 });
 
 //POST persons
 router.post("/persons", function (req, res) {
     var user = req.body;
-    person.createPerson(user, function (err,user) {
+    person.createPerson(user, function (err, user) {
         if (err) {
-            console.log('Error Inserting New Data');
-            if (err.name === 'ValidationError') {
-                for (field in err.errors) {
-                    console.log(err.errors[field].message);
-                }
-            }
             res.sendStatus(400);
         }
         else {
@@ -45,16 +44,16 @@ router.post("/persons", function (req, res) {
     })
 });
 
+/**
+ * Posts or edit a rating
+ * This one is a bit messy because the validation from the rating schema isnt working correctly. Thats why all the validation is done in here
+ */
 router.post('/ratings/:imdb', function (req, res) {
-    var newRating = [req.body];
-    movie.createRating(newRating,req.params.imdb,function (err,newRating) {
+    var userId = req.body.userId;
+    var ratingAmount = req.body.rating;
+    var jjj = req.params.imdb;
+    movie.createRating(jjj, userId, ratingAmount, function (err, newRating) {
         if (err) {
-            console.log('Error Inserting New Rating');
-            if (err.name === 'ValidationError') {
-                for (field in err.errors) {
-                    console.log(err.errors[field].message);
-                }
-            }
             res.sendStatus(400);
         }
         else {
@@ -63,6 +62,13 @@ router.post('/ratings/:imdb', function (req, res) {
     })
 });
 
+
+function controlRating(userid, rating) {
+
+    if (userid === undefined || rating === undefined) {
+        throw err;
+    }
+}
 
 
 router.get('/ratings', function (req, res) {
@@ -76,7 +82,17 @@ router.get('/ratings', function (req, res) {
 
 
 //GET movies
-router.get('/movies', function (req, res) {
+router.get('/movies/', function (req, res) {
+    movie.getMovies(function (err, movies) {
+        if (err) {
+            res.sendStatus(err.message);
+        }
+        res.json(movies);
+    })
+});
+
+//GET movies
+router.get('/movies/', function (req, res) {
     movie.getMovies(function (err, movies) {
         if (err) {
             res.sendStatus(err.message);
@@ -86,27 +102,20 @@ router.get('/movies', function (req, res) {
 });
 
 
-//POST movies
-router.post("/movies", function (req, res) {
-    var newMovie = req.body;
-    movie.createMovies(newMovie, function (err,movie) {
+
+
+router.get("/movies/:imdb", function (req, res) {
+    var userid = "23e424242";
+    movie.shit(req.params.imdb, userid,function (err,movie) {
         if (err) {
-            console.log('Error Inserting New Data');
-            if (err.name === 'ValidationError') {
-                for (field in err.errors) {
-                    console.log(err.errors[field].message);
-                }
-            }
-            res.sendStatus(400);
+
         }
-        else {
+        else{
             res.json(movie);
         }
+
     })
 });
-
-
-
 
 
 module.exports = router;

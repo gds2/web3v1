@@ -16,14 +16,13 @@ var ratingSchema = new mongoose.Schema({
         maximum: 5,
         minimum: 0,
         required: true
-
     }
 });
 
-var ratingTool = module.exports = mongoose.model('ratings', ratingSchema);
 
 module.exports.createRating = function (rating,callback) {
     try {
+        rating
         ratingTool.create(rating, callback);
     }
     catch (err){
@@ -35,6 +34,12 @@ module.exports.createRating = function (rating,callback) {
         }
     }
 
+}
+
+function controlRating(userid,rating) {
+    if(userid === undefined || rating === undefined){
+        throw err;
+    }
 }
 
 module.exports.getRatings = function (callback, limit) {
