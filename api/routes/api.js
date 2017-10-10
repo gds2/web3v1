@@ -3,7 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 person = require('../models/users.js');
 movie = require('../models/movies.js');
-rating = require('../models/ratings.js');
+rater = require('../models/ratings.js');
 
 //GET persons
 router.get('/persons', function (req, res) {
@@ -49,10 +49,21 @@ router.post("/persons", function (req, res) {
  * This one is a bit messy because the validation from the rating schema isnt working correctly. Thats why all the validation is done in here
  */
 router.post('/ratings/:imdb', function (req, res) {
-    var userId = req.body.userId;
+    var userId = req.body.imdb;
     var ratingAmount = req.body.rating;
-    var jjj = req.params.imdb;
-    movie.createRating(jjj, userId, ratingAmount, function (err, newRating) {
+    var imdb = req.params.imdb;
+    rater.createRating (imdb, userId, ratingAmount, function (err, newRating) {
+        if (err) {
+            res.sendStatus(400);
+        }
+        else {
+            res.json(newRating);
+        }
+    })
+});
+
+router.get('/ratings/', function (req, res) {
+    rating.getAllRatings( function (err, newRating) {
         if (err) {
             res.sendStatus(400);
         }
@@ -63,18 +74,27 @@ router.post('/ratings/:imdb', function (req, res) {
 });
 
 
-function controlRating(userid, rating) {
+router.get('/ratings/:imdb', function (req, res) {
+    var id = "hond";
+    var imdb = req.params.imdb;
+    rating.getRatings(id, imdb, function (err, newRating) {
+        if (err) {
+            res.sendStatus(err);
+        }
+        else {
+            res.json(newRating);
+        }
+    })
+})
 
-    if (userid === undefined || rating === undefined) {
-        throw err;
-    }
-}
+
+
 
 
 router.get('/ratings', function (req, res) {
-    rating.getRatings(function (err, ratings) {
+    rater.getRatings(function (err, ratings) {
         if (err) {
-            res.sendStatus(err.message);
+            res.sendStatus(err);
         }
         res.json(ratings);
     })
