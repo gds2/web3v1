@@ -14,10 +14,13 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/api', require('./api/routes/api.js'));
+app.use('/auth', require('./api/routes/auth.js'));
 
 app.get('/', function (req,res) {
     res.send('working');
 })
+
+
 app.listen(3000);
 console.log('Api on 3000');
 
