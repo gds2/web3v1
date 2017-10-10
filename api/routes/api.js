@@ -82,7 +82,17 @@ router.get('/ratings', function (req, res) {
 
 
 //GET movies
-router.get('/movies', function (req, res) {
+router.get('/movies/', function (req, res) {
+    movie.getMovies(function (err, movies) {
+        if (err) {
+            res.sendStatus(err.message);
+        }
+        res.json(movies);
+    })
+});
+
+//GET movies
+router.get('/movies/', function (req, res) {
     movie.getMovies(function (err, movies) {
         if (err) {
             res.sendStatus(err.message);
@@ -92,22 +102,18 @@ router.get('/movies', function (req, res) {
 });
 
 
-//POST movies
-router.post("/movies", function (req, res) {
-    var newMovie = req.body;
-    movie.createMovies(newMovie, function (err, movie) {
+
+
+router.get("/movies/:imdb", function (req, res) {
+    var userid = "23e424242";
+    movie.shit(req.params.imdb, userid,function (err,movie) {
         if (err) {
-            console.log('Error Inserting New Data');
-            if (err.name === 'ValidationError') {
-                for (field in err.errors) {
-                    console.log(err.errors[field].message);
-                }
-            }
-            res.sendStatus(400);
+
         }
-        else {
+        else{
             res.json(movie);
         }
+
     })
 });
 
