@@ -54,16 +54,20 @@ module.exports.getRatings = function (id,imdb,callback) {
     });
 }
 
-module.exports.getAverageRatings = function (imdb, callback) {
+module.exports.getAverageRatings = function (callback) {
     ratingTool.aggregate(
-        { "$match": {"imdb": imdb
-        }},
+        {"$lookup" : {"from": "movies", "localField": "imdb", "foreignField" : "imdb", "as" : "movie" }},
+        {"$unwind": "$movie"},
         { "$group": {
-            "_id": null,
-            "rating": { "$avg": "$rating" }
+            "_id": {
+                "imdb" : "$imdb"
+            },
+            "movie" : {"$push": "$movie"},
+            "average rating": { "$avg": "$rating" }
         }}
         , function (err,doc) {
             if(doc.length){
+                callback(err,doc);
             }
         });
 }

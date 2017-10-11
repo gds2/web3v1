@@ -49,7 +49,7 @@ router.post("/persons", function (req, res) {
  * This one is a bit messy because the validation from the rating schema isnt working correctly. Thats why all the validation is done in here
  */
 router.post('/ratings/:imdb', function (req, res) {
-    var userId = req.body.imdb;
+    var userId = req.body.userid;
     var ratingAmount = req.body.rating;
     var imdb = req.params.imdb;
     rater.createRating (imdb, userId, ratingAmount, function (err, newRating) {
@@ -74,10 +74,8 @@ router.get('/ratings/', function (req, res) {
 });
 
 
-router.get('/ratings/:imdb', function (req, res) {
-    var id = "hond";
-    var imdb = req.params.imdb;
-    rating.getRatings(id, imdb, function (err, newRating) {
+router.get('/ratings/average', function (req, res) {
+    rating.getAverageRatings(function (err, newRating) {
         if (err) {
             res.sendStatus(err);
         }
@@ -111,9 +109,9 @@ router.get('/movies/', function (req, res) {
     })
 });
 
-//GET movies
-router.get('/movies/', function (req, res) {
-    movie.getMovies(function (err, movies) {
+//post movies
+router.post('/movies/', function (req, res) {
+    movie.createMovies(req.body,function (err, movies) {
         if (err) {
             res.sendStatus(err.message);
         }
