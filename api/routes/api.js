@@ -44,6 +44,7 @@ router.post("/persons", function (req, res) {
     })
 });
 
+
 /**
  * Posts or edit a rating
  * This one is a bit messy because the validation from the rating schema isnt working correctly. Thats why all the validation is done in here

@@ -7,7 +7,7 @@ var db = mongoose.connection;
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-
+app.set('private-key', 'takesian-deSwart');
 
 
 

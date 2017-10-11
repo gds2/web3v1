@@ -45,13 +45,15 @@ module.exports.createPerson = function (user,callback) {
 
 }
 
+
+
 module.exports.getPersonById = function(callback,id){
     person.findById(callback,id);
 }
 
 
-module.exports.loginPerson = function (user,callback) {
-    person.findOne(callback,user).select("-password");
+module.exports.loginPerson = function (username,password,callback) {
+    person.findOne(callback,{"username":username, "password":password}).select("-password");
 
 }
 
