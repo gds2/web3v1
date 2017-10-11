@@ -5,6 +5,8 @@ person = require('../models/users.js');
 movie = require('../models/movies.js');
 rater = require('../models/ratings.js');
 
+
+
 //GET persons
 router.get('/persons', function (req, res) {
     person.getPersons(function (err, persons) {
@@ -14,7 +16,6 @@ router.get('/persons', function (req, res) {
         res.json(persons);
     })
 });
-
 
 router.get('/persons/:_id', function (req, res) {
     person.getPersonById(req.params._id, function (err, person) {
@@ -30,7 +31,6 @@ router.get('/persons/:_id', function (req, res) {
     })
 });
 
-
 //POST persons
 router.post("/persons", function (req, res) {
     var user = req.body;
@@ -43,6 +43,7 @@ router.post("/persons", function (req, res) {
         }
     })
 });
+
 
 /**
  * Posts or edit a rating

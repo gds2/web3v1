@@ -71,6 +71,13 @@ describe("Post a body without an username to the users", function () {
     });
 });
 
+describe("dw",function () {
+    it("Should return "),function (done) {
+        server.post("api/auth")
+    }
+
+})
+
 describe("Post a body without a name to the users", function () {
     it("Should return a 400 code", function (done) {
         server.post("api/persons").send({
