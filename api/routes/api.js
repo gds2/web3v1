@@ -8,8 +8,9 @@ rater = require('../models/ratings.js');
 
 
 //GET persons
-router.get('/persons', function (req, res) {
-    person.getPersons(function (err, persons) {
+router.get('/user/limit/:limit',function (req, res) {
+    var limit = parseInt(req.params.limit);
+    person.getPersons(limit,function (err, persons) {
         if (err) {
             res.sendStatus(err.message);
         }
@@ -17,7 +18,19 @@ router.get('/persons', function (req, res) {
     })
 });
 
-router.get('/persons/:_id', function (req, res) {
+//GET persons
+router.get('/user?',function (req, res) {
+    person.getPersons(req,function (err, persons) {
+        if (err) {
+            res.sendStatus(err.message);
+        }
+        res.json(persons);
+    })
+});
+
+
+
+router.get('/user/:_id', function (req, res) {
     person.getPersonById(req.params._id, function (err, person) {
         if (err) {
             res.sendStatus(err.message);
@@ -32,7 +45,7 @@ router.get('/persons/:_id', function (req, res) {
 });
 
 //POST persons
-router.post("/persons", function (req, res) {
+router.post("/user", function (req, res) {
     var user = req.body;
     person.createPerson(user, function (err, user) {
         if (err) {
@@ -45,10 +58,6 @@ router.post("/persons", function (req, res) {
 });
 
 
-/**
- * Posts or edit a rating
- * This one is a bit messy because the validation from the rating schema isnt working correctly. Thats why all the validation is done in here
- */
 router.post('/ratings/:imdb', function (req, res) {
     var userId = req.body.userid;
     var ratingAmount = req.body.rating;
@@ -75,8 +84,26 @@ router.get('/ratings/', function (req, res) {
 });
 
 
+/**
+ * Get movies with their average rating
+ */
 router.get('/ratings/average', function (req, res) {
     rating.getAverageRatings(function (err, newRating) {
+        if (err) {
+            res.sendStatus(err);
+        }
+        else {
+            res.json(newRating);
+        }
+    })
+})
+
+/**
+ * Delete a rating
+ */
+router.delete('/ratings/:imdb', function (req, res) {
+    id = "2340001223312110";
+    rating.deleteRating(req.params.imdb,id,function (err, newRating) {
         if (err) {
             res.sendStatus(err);
         }

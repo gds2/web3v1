@@ -26,8 +26,15 @@ var personSchema = new mongoose.Schema({
 
 var person = module.exports = mongoose.model('persons', personSchema);
 
-module.exports.getPersons = function (callback, limit) {
-    person.find(callback).select("-password").limit(limit);
+module.exports.getPersons = function (req, callback) {
+    var userName = req.query.username;
+    var limit = parseInt(req.query.limit);
+        if (userName != undefined) {
+            person.find({"username": userName}, {"password": 0}, callback);
+        }
+        else{
+            person.find(callback).select("-password").limit(limit);
+        }
 }
 
 module.exports.createPerson = function (user,callback) {
