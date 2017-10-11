@@ -59,9 +59,7 @@ module.exports.getAverageRatings = function (callback) {
         {"$lookup" : {"from": "movies", "localField": "imdb", "foreignField" : "imdb", "as" : "movie" }},
         {"$unwind": "$movie"},
         { "$group": {
-            "_id": {
-                "imdb" : "$imdb"
-            },
+            "_id": "$_id",
             "movie" : {"$push": "$movie"},
             "average rating": { "$avg": "$rating" }
         }}
