@@ -57,7 +57,7 @@ router.post("/user", function (req, res) {
     })
 });
 
-
+//Have to edit this a bit
 router.post('/ratings/:imdb', function (req, res) {
     var userId = req.body.userid;
     var ratingAmount = req.body.rating;
@@ -72,6 +72,7 @@ router.post('/ratings/:imdb', function (req, res) {
     })
 });
 
+//Has to go later
 router.get('/ratings/', function (req, res) {
     rating.getAllRatings( function (err, newRating) {
         if (err) {
