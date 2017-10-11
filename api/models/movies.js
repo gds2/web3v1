@@ -1,48 +1,45 @@
 var mongoose = require('mongoose');
-
 var movieSchema = new mongoose.Schema({
-    imdb:{
+    imdb: {
         type: String,
         required: true
     },
-    titel:{
+    titel: {
         type: String,
         required: true
     },
-    datum:{
+    datum: {
         type: String,
         required: true
     },
-    lengte:{
+    lengte: {
         type: String,
         required: true
     },
-    regisseur:{
+    regisseur: {
         type: String,
         required: true
     },
-    beschrijving:{
+    beschrijving: {
         type: String,
         required: true
     }
 });
 
-var movie = module.exports = mongoose.model('movies', movieSchema);
-
+var moviesTool = module.exports = mongoose.model('movies', movieSchema);
 module.exports.getMovies = function (callback, limit) {
-    person.find(callback).limit(limit);
+    movie.find(callback).limit(limit);
 }
 
-module.exports.createMovie = function (newMovie,callback) {
+module.exports.createMovies = function (movie, callback) {
     try {
-        movie.create(newMovie, callback);
+        moviesTool.create(movie, callback);
     }
-    catch (err){
-        if(err.message === "ValidatorError"){
-
-        }
-        else{
+    catch (err) {
+        if (err.message === "ValidatorError") {
 
         }
     }
+
 }
+

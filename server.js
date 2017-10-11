@@ -7,17 +7,20 @@ var db = mongoose.connection;
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-
+app.set('private-key', 'takesian-deSwart');
 
 
 
 
 // Routes
 app.use('/api', require('./api/routes/api.js'));
+app.use('/auth', require('./api/routes/auth.js'));
 
 app.get('/', function (req,res) {
     res.send('working');
 })
+
+
 app.listen(3000);
 console.log('Api on 3000');
 

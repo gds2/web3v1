@@ -1,11 +1,10 @@
 var mongoose = require('mongoose');
-var integer = 0.0;
 var ratingSchema = new mongoose.Schema({
-    userId:{
+    userid:{
         type: String,
         required: true
     },
-    movieId:{
+    imdb:{
         type: String,
         required: true
     },
@@ -16,28 +15,58 @@ var ratingSchema = new mongoose.Schema({
         maximum: 5,
         minimum: 0,
         required: true
-
     }
 });
 
 var ratingTool = module.exports = mongoose.model('ratings', ratingSchema);
 
-module.exports.createRating = function (rating,callback) {
-    try {
-        ratingTool.create(rating, callback);
-    }
-    catch (err){
-        if(err.message === "ValidatorError"){
 
+
+
+module.exports.createRating = function (imdb, userid, ratingAmount,callback) {
+    if (typeof userid != 'undefined' && typeof ratingAmount != 'undefined' && typeof ratingAmount === "number") {
+        if (ratingAmount <= 5 && ratingAmount >= 0.5) {
+            ratingTool.update( { userid: userid,  imdb : imdb}, {rating : ratingAmount }, { upsert : true }, callback );
         }
         else{
-
+            callback(400);
         }
     }
-
+    else{
+        callback(400);
+    }
 }
 
-module.exports.getRatings = function (callback, limit) {
+
+module.exports.getAllRatings = function (callback, limit) {
     ratingTool.find(callback).limit(limit);
+}
+
+module.exports.getRatings = function (id,imdb,callback) {
+    ratingTool.find({userid: id,imdb: imdb}, function (err,doc) {
+        if(doc.length){
+            callback(err,doc);
+        }
+        else{
+            callback(404);
+        }
+
+    });
+}
+
+module.exports.getAverageRatings = function (callback) {
+    ratingTool.aggregate(
+        {"$lookup" : {"from": "movies", "localField": "imdb", "foreignField" : "imdb", "as" : "movie" }},
+        {"$unwind": "$movie"},
+        { "$group": {
+            "_id": "$_id",
+            "movie" : {"$push": "$movie"},
+            "average rating": { "$avg": "$rating" }
+        }}
+        , function (err,doc) {
+            if(doc.length){
+                callback(err,doc);
+            }
+        });
 }
 

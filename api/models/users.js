@@ -1,6 +1,4 @@
 var mongoose = require('mongoose');
-
-
 var personSchema = new mongoose.Schema({
     name:{
         type: String,
@@ -46,3 +44,16 @@ module.exports.createPerson = function (user,callback) {
     }
 
 }
+
+
+
+module.exports.getPersonById = function(callback,id){
+    person.findById(callback,id);
+}
+
+
+module.exports.loginPerson = function (username,password,callback) {
+    person.findOne(callback,{"username":username, "password":password}).select("-password");
+
+}
+
