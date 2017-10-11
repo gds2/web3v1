@@ -22,7 +22,6 @@ var ratingTool = module.exports = mongoose.model('ratings', ratingSchema);
 
 
 
-
 module.exports.createRating = function (imdb, userid, ratingAmount,callback) {
     if (typeof userid != 'undefined' && typeof ratingAmount != 'undefined' && typeof ratingAmount === "number") {
         if (ratingAmount <= 5 && ratingAmount >= 0.5) {

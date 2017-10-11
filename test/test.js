@@ -18,9 +18,6 @@ describe("Users unittest", function () {
     });
 });
 
-
-
-
 describe("Post a full body to the users", function () {
     it("Should return a json file and a 200 code", function (done) {
         server.post("api/persons").send({
