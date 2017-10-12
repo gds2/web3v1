@@ -40,7 +40,7 @@ module.exports.createRating = function (imdb, userid, ratingAmount,callback) {
 module.exports.getAllRatings = function (callback, limit) {
     ratingModel.find(callback).limit(limit);
 }
-
+//has to go later
 module.exports.getRatings = function (id,imdb,callback) {
     ratingModel.find({userid: id,imdb: imdb}, function (err,doc) {
         if(doc.length){
@@ -66,10 +66,30 @@ module.exports.getAverageRatings = function (callback) {
             if(doc.length){
                 callback(err,doc);
             }
+            else{
+                callback(204);
+            }
         });
 }
 
+/**
+ * Needs to be tested
+ * @param imdb
+ * @param id
+ * @param callback
+ */
 module.exports.deleteRating = function (imdb,id,callback) {
-    ratingModel.remove({imdb: imdb, userid : id  }, callback);
+    ratingModel.findone({imdb: imdb, userid : id}, function (err,doc) {
+        if(doc.length) {
+            ratingModel.remove({imdb: imdb, userid: id}, callback);
+        }
+        else{
+            callback(404);
+        }
+
+    })
+
+
+
 }
 
