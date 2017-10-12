@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+movie = require('../models/movies.js');
 var personSchema = new mongoose.Schema({
     name:{
         type: String,
@@ -39,24 +40,31 @@ module.exports.getPersons = function (req, callback) {
 }
 
 module.exports.createPerson = function (user,callback) {
-    try {
-        person.create(user, callback);
-    }
-    catch (err){
-        if(err.message === "ValidatorError"){
-
+    person.find({"username" : user.username}, function (err,doc) {
+        if(doc.length){
+            callback(404);
         }
         else{
-
+            person.create(user, callback);
         }
-    }
+    })
+
 
 }
 
 
 
-module.exports.getPersonById = function(callback,id){
-    person.findById(callback,id);
+module.exports.getPersonById = function(id,callback){
+    person.findById(id,function (err,doc) {
+        if(typeof doc != 'undefined'){
+            callback(err,doc);
+        }
+        else{
+            //Not found
+            callback(404);
+        }
+    });
+
 }
 
 

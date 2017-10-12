@@ -26,14 +26,27 @@ var movieSchema = new mongoose.Schema({
     }
 });
 
-var moviesTool = module.exports = mongoose.model('movies', movieSchema);
+var moviesModel = module.exports = mongoose.model('movies', movieSchema);
 module.exports.getMovies = function (callback, limit) {
     movie.find(callback).limit(limit);
 }
 
+module.exports.findMovies = function (imdb,callback) {
+    moviesModel.find({"imdb": imdb },function (err,doc) {
+        if(doc.length){
+            callback(err,doc);
+        }
+        else{
+            callback(404);
+        }
+
+    })
+
+}
+
 module.exports.createMovies = function (movie, callback) {
     try {
-        moviesTool.create(movie, callback);
+        moviesModel.create(movie, callback);
     }
     catch (err) {
         if (err.message === "ValidatorError") {

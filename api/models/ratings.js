@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+movie = require('../models/movies.js');
 var ratingSchema = new mongoose.Schema({
     userid:{
         type: String,
@@ -21,11 +22,27 @@ var ratingSchema = new mongoose.Schema({
 var ratingModel = module.exports = mongoose.model('ratings', ratingSchema);
 
 
-
+/**
+ * Create a new rating
+ * @param imdb
+ * @param userid
+ * @param ratingAmount
+ * @param callback
+ */
 module.exports.createRating = function (imdb, userid, ratingAmount,callback) {
+    //Check if the inputs are correct
     if (typeof userid != 'undefined' && typeof ratingAmount != 'undefined' && typeof ratingAmount === "number") {
         if (ratingAmount <= 5 && ratingAmount >= 0.5) {
-            ratingModel.update( { userid: userid,  imdb : imdb}, {rating : ratingAmount }, { upsert : true }, callback );
+            movie.findMovies(imdb,function (err,movie) {
+                if(movie){
+                    ratingModel.update( { userid: userid,  imdb : imdb}, {rating : ratingAmount }, { upsert : true }, callback );
+                }
+                else{
+                    callback(404)
+                }
+
+            })
+
         }
         else{
             callback(400);

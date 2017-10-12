@@ -1,3 +1,4 @@
+/**
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
@@ -89,6 +90,7 @@ router.get('/ratings/', function (req, res) {
 /**
  * Get movies with their average rating
  */
+/**
 router.get('/ratings/average', function (req, res) {
     rating.getAverageRatings(function (err, newRating) {
         if (err) {
@@ -103,6 +105,7 @@ router.get('/ratings/average', function (req, res) {
 /**
  * Needs to be edited with id from ticket
  */
+/**
 router.delete('/ratings/:imdb', function (req, res) {
     id = "2340001223312110";
     rating.deleteRating(req.params.imdb,id,function (err, newRating) {
