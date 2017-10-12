@@ -100,7 +100,7 @@ router.get('/ratings/average', function (req, res) {
 })
 
 /**
- * Delete a rating
+ * Needs to be edited with id from ticket
  */
 router.delete('/ratings/:imdb', function (req, res) {
     id = "2340001223312110";

@@ -29,11 +29,12 @@ var person = module.exports = mongoose.model('persons', personSchema);
 module.exports.getPersons = function (req, callback) {
     var userName = req.query.username;
     var limit = parseInt(req.query.limit);
+    var a = ["{'username':" +  "'" + userName + "}"];
         if (userName != undefined) {
-            person.find({"username": userName}, {"password": 0}, callback);
+            person.find(a, {"password": 0}, callback);
         }
         else{
-            person.find(callback).select("-password").limit(limit);
+            person.find(callback,{ skip: 10, limit: limit }).select("-password").limit(limit);
         }
 }
 
