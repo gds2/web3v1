@@ -60,7 +60,15 @@ module.exports.getPersonById = function(callback,id){
 
 
 module.exports.loginPerson = function (username,password,callback) {
-    person.findOne(callback,{"username":username, "password":password}).select("-password");
+    person.find({"username":username, "password" : password},{"password" : 0, "username" : 0, "name" : 0,"lastname" : 0,"preposition" : 0},function (err, doc) {
+        if(doc.length){
+            var a = JSON.parse(JSON.stringify(doc));
+            callback(err,a[0]);
+        }
+        else{
+            callback(403);
+        }
+    });
 
 }
 

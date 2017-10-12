@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
+var jwt = require('jsonwebtoken');
 person = require('../models/users.js');
 movie = require('../models/movies.js');
 rater = require('../models/ratings.js');
