@@ -29,6 +29,11 @@ var userSchema = new mongoose.Schema({
 
 var userModel = module.exports = mongoose.model('users', userSchema);
 
+/**
+ * Get users from the database
+ * @param req
+ * @param callback
+ */
 module.exports.getUsers = function (req, callback) {
     //Paging
     var page = parseInt(req.params.page);
