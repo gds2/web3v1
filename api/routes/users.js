@@ -28,7 +28,6 @@ function getUsers(req,res){
 
 //Creating a new user
 router.post("", function (req, res) {
-
     user.createPerson(req, function (err, user) {
         //Send a 400 code if an error occured
         if (err) {
