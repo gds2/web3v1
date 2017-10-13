@@ -1,3 +1,6 @@
+/**
+ *The model for the ratings
+ */
 var mongoose = require('mongoose');
 movie = require('../models/movies.js');
 var ratingSchema = new mongoose.Schema({
@@ -24,9 +27,7 @@ var ratingModel = module.exports = mongoose.model('ratings', ratingSchema);
 
 /**
  * Create a new rating
- * @param imdb
- * @param userid
- * @param ratingAmount
+ * @param req
  * @param callback
  */
 module.exports.createRating = function (req,callback) {
@@ -34,7 +35,7 @@ module.exports.createRating = function (req,callback) {
     var ratingAmount = req.body.rating;
     var imdb = req.body.imdb;
     //Check if the inputs are correct
-    if (typeof userid != 'undefined' && typeof ratingAmount != 'undefined' && typeof ratingAmount === "number") {
+    if (typeof userid !== 'undefined' && typeof ratingAmount !== 'undefined' && typeof ratingAmount === "number") {
         if (ratingAmount <= 5 && ratingAmount >= 0.5) {
             movie.getMovies(imdb,function (err, movie) {
                 if(movie){
@@ -54,12 +55,12 @@ module.exports.createRating = function (req,callback) {
     else{
         callback("userid needs to be defined, imdb needs to be defined and rating needs to be a number");
     }
-}
+};
 
 
 module.exports.getAllRatings = function (callback, limit) {
     ratingModel.find(callback).limit(limit);
-}
+};
 //has to go later
 module.exports.getRatings = function (id,imdb,callback) {
     ratingModel.find({userid: id,imdb: imdb}, function (err,doc) {
@@ -71,7 +72,7 @@ module.exports.getRatings = function (id,imdb,callback) {
         }
 
     });
-}
+};
 
 module.exports.getAverageRatings = function (req,callback) {
     //Paging
@@ -122,7 +123,7 @@ module.exports.getAverageRatings = function (req,callback) {
                 }
             });
     }
-}
+};
 
 /**
  * Needs to be tested
@@ -143,5 +144,5 @@ module.exports.deleteRating = function (imdb,id,callback) {
 
 
 
-}
+};
 

@@ -5,7 +5,7 @@ user = require('../models/users.js');
 
 
 router.post("/", function (req,res) {
-    user.loginPerson(req.body.username,req.body.password, function (err, userObject) {
+    user.loginUser(req.body.username,req.body.password, function (err, userObject) {
         if(err){
             res.status(403).json({error:"Invalid username or passowrd"});
             return;

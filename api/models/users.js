@@ -1,3 +1,6 @@
+/**
+ *The model for the users
+ */
 var mongoose = require('mongoose');
 var userSchema = new mongoose.Schema({
     name: {
@@ -26,8 +29,7 @@ var userSchema = new mongoose.Schema({
 
 var userModel = module.exports = mongoose.model('users', userSchema);
 
-module.exports.getPersons = function (req, callback) {
-
+module.exports.getUsers = function (req, callback) {
     //Paging
     var page = parseInt(req.params.page);
     var query = req.query;
@@ -41,12 +43,14 @@ module.exports.getPersons = function (req, callback) {
                 callback("Nothing to show");
             }
         });
+};
 
-
-
-}
-
-module.exports.createPerson = function (req, callback) {
+/**
+ * Create a new user
+ * @param req
+ * @param callback
+ */
+module.exports.createUser = function (req, callback) {
     var user = req.body;
     userModel.find({"username": user.username}, function (err, doc) {
         if (doc.length) {
@@ -58,24 +62,10 @@ module.exports.createPerson = function (req, callback) {
     })
 
 
-}
+};
 
 
-module.exports.getPersonById = function (id, callback) {
-    userModel.findById(id, function (err, doc) {
-        if (typeof doc != 'undefined') {
-            callback(err, doc);
-        }
-        else {
-            //Not found
-            callback(404);
-        }
-    });
-
-}
-
-
-module.exports.loginPerson = function (username, password, callback) {
+module.exports.loginUser = function (username, password, callback) {
     userModel.find({"username": username, "password": password}, {
         "password": 0,
         "username": 0,
@@ -92,5 +82,5 @@ module.exports.loginPerson = function (username, password, callback) {
         }
     });
 
-}
+};
 

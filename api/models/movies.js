@@ -1,3 +1,6 @@
+/**
+ *The model for the Movies
+ */
 var mongoose = require('mongoose');
 var movieSchema = new mongoose.Schema({
     imdb: {
@@ -37,7 +40,7 @@ module.exports.getMovies = function (req, callback) {
     var pageStart = pageEnd - 10;
     //Get the movies. Password is zero for if a hacker tries to be smart
     movie.find(query, {"password": 0}, {skip: pageStart, limit: pageEnd}, function (err, doc) {
-        if(typeof doc != 'undefined') {
+        if(typeof doc !== 'undefined') {
             if (doc.length) {
                 callback(err, doc);
             }
@@ -49,7 +52,7 @@ module.exports.getMovies = function (req, callback) {
             callback(400)
         }
     });
-}
+};
 
 //has to go
 module.exports.createMovies = function (movie, callback) {
@@ -62,5 +65,5 @@ module.exports.createMovies = function (movie, callback) {
         }
     }
 
-}
+};
 

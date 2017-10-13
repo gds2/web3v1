@@ -1,4 +1,6 @@
-//All the routes for the movies
+/**
+ * All the routes for the movies
+ */
 var express = require('express');
 var router = express.Router();
 movie = require('../models/movies.js');
@@ -10,11 +12,16 @@ router.get('', function (req, res) {
     getMovies(req,res);
 });
 
+///GET movies with paging
+router.get('/page/:page', function (req, res) {
+    getMovies(req,res);
+});
+
 //Function for getting the movies
 function getMovies(req,res){
     movie.getMovies(req,function (err, movies) {
         if(err === 400){
-            res.send(err);
+            res.send(err,400);
         }
         else if (err  !== 400 && err !== null) {
             res.send(err,404);
@@ -23,10 +30,6 @@ function getMovies(req,res){
     })
 }
 
-///GET movies with paging
-router.get('/page/:page', function (req, res) {
-    getMovies(req,res);
-});
 
 //post movies HAS TO GO LATER
 router.post('', function (req, res) {

@@ -1,4 +1,6 @@
-// All the routes for the ratings
+/**
+ * All the routes for the ratings
+ */
 var express = require('express');
 var router = express.Router();
 rater = require('../models/ratings.js');
@@ -39,9 +41,13 @@ router.get('', function (req, res) {
  */
 router.get('/average', function (req, res) {
     getAverage(req,res);
-})
+});
 
-//Function for getting the average raing
+/**
+ * Function for getting the average rating per movie
+ * @param req
+ * @param res
+ */
 function getAverage(req,res) {
     rating.getAverageRatings(req,function (err, newRating) {
         if (err) {
@@ -57,7 +63,7 @@ function getAverage(req,res) {
  */
 router.get('/average/page/:page', function (req, res) {
     getAverage(req,res);
-})
+});
 
 /**
  * Needs to be edited with id from ticket
@@ -72,4 +78,4 @@ router.delete('/:imdb', function (req, res) {
             res.json(newRating);
         }
     })
-})
+});

@@ -1,4 +1,6 @@
-//All the routes for the users
+/**
+ * All the routes for the users
+ */
 var express = require('express');
 var router = express.Router();
 user = require('../models/users.js');
@@ -16,7 +18,7 @@ router.get("",function (req, res) {
 
 //Function for getting the users
 function getUsers(req,res){
-    user.getPersons(req,function (err, persons) {
+    user.getUsers(req,function (err, persons) {
         if (err) {
             res.send(err,404);
         }
@@ -28,7 +30,7 @@ function getUsers(req,res){
 
 //Creating a new user
 router.post("", function (req, res) {
-    user.createPerson(req, function (err, user) {
+    user.createUser(req, function (err) {
         //Send a 400 code if an error occured
         if (err) {
             res.send(400, err);
