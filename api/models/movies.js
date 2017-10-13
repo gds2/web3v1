@@ -53,6 +53,27 @@ module.exports.getMovies = function (req, callback) {
         }
     });
 };
+/**
+ * Find a movie by imdb. This is only to be used by the server and not the API
+ * @param imdb
+ * @param callback
+ */
+module.exports.findMovieByImdb = function (imdb, callback) {
+    //Get the movies. Password is zero for if a hacker tries to be smart
+    movie.find({"imdb" : imdb}, {"password": 0}, function (err, doc) {
+        if(typeof doc !== 'undefined') {
+            if (doc.length) {
+                callback(err, doc);
+            }
+            else {
+                callback("Nothing to show");
+            }
+        }
+        else{
+            callback(400)
+        }
+    });
+};
 
 //has to go
 module.exports.createMovies = function (movie, callback) {

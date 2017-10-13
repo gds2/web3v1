@@ -37,10 +37,13 @@ module.exports.createRating = function (req,callback) {
     //Check if the inputs are correct
     if (typeof userid !== 'undefined' && typeof ratingAmount !== 'undefined' && typeof ratingAmount === "number") {
         if (ratingAmount <= 5 && ratingAmount >= 0.5) {
-            movie.getMovies(imdb,function (err, movie) {
+            //Make sure the movie exits
+            movie.findMovieByImdb(imdb,function (err, movie) {
+                //Create or update the rating if the movie exists
                 if(movie){
                     ratingModel.update( { userid: userid,  imdb : imdb}, {rating : ratingAmount }, { upsert : true }, callback );
                 }
+                //Movie not found
                 else{
                     callback("Movie not found");
                 }
@@ -48,10 +51,12 @@ module.exports.createRating = function (req,callback) {
             })
 
         }
+        //Bad rating
         else{
             callback("Rating is not higher than 0.5 or lower than 5.1");
         }
     }
+    //Not everything is defined right
     else{
         callback("userid needs to be defined, imdb needs to be defined and rating needs to be a number");
     }
