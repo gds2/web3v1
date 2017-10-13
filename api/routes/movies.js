@@ -7,9 +7,19 @@ module.exports = router;
 
 ///GET movies
 router.get('', function (req, res) {
-    movie.getMovies(function (err, movies) {
+    movie.getMovies(req,function (err, movies) {
         if (err) {
-            res.sendStatus(err.message);
+            res.send(err,404);
+        }
+        res.json(movies);
+    })
+});
+
+///GET movies with paging
+router.get('/page/:page', function (req, res) {
+    movie.getMovies(req,function (err, movies) {
+        if (err) {
+            res.send(err,404);
         }
         res.json(movies);
     })

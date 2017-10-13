@@ -1,24 +1,24 @@
 var mongoose = require('mongoose');
 movie = require('../models/movies.js');
 var personSchema = new mongoose.Schema({
-    name:{
+    name: {
         type: String,
         required: true
     },
-    lastname:{
+    lastname: {
         type: String,
         required: true
     }
     ,
-    preposition:{
+    preposition: {
         type: String,
         required: false
     },
-    username:{
+    username: {
         type: String,
         required: true
     },
-    password:{
+    password: {
         type: String,
         required: true
     }
@@ -28,23 +28,31 @@ var personSchema = new mongoose.Schema({
 var person = module.exports = mongoose.model('persons', personSchema);
 
 module.exports.getPersons = function (req, callback) {
-    var userName = req.query.username;
-    var limit = parseInt(req.query.limit);
-    var a = ["{'username':" +  "'" + userName + "}"];
-        if (userName != undefined) {
-            person.find(a, {"password": 0}, callback);
-        }
-        else{
-            person.find(callback,{ skip: 10, limit: limit }).select("-password").limit(limit);
-        }
+
+    //Paging
+    var page = parseInt(req.params.page);
+    var query = req.query;
+    var pageEnd = page * 10;
+    var pageStart = pageEnd - 10;
+        person.find(query, {"password": 0}, {skip: pageStart, limit: pageEnd}, function (err, doc) {
+            if (doc.length) {
+                    callback(err, doc);
+            }
+            else {
+                callback("Nothing to show");
+            }
+        });
+
+
+
 }
 
-module.exports.createPerson = function (user,callback) {
-    person.find({"username" : user.username}, function (err,doc) {
-        if(doc.length){
-            callback(404);
+module.exports.createPerson = function (user, callback) {
+    person.find({"username": user.username}, function (err, doc) {
+        if (doc.length) {
+            callback("Username already exists");
         }
-        else{
+        else {
             person.create(user, callback);
         }
     })
@@ -53,13 +61,12 @@ module.exports.createPerson = function (user,callback) {
 }
 
 
-
-module.exports.getPersonById = function(id,callback){
-    person.findById(id,function (err,doc) {
-        if(typeof doc != 'undefined'){
-            callback(err,doc);
+module.exports.getPersonById = function (id, callback) {
+    person.findById(id, function (err, doc) {
+        if (typeof doc != 'undefined') {
+            callback(err, doc);
         }
-        else{
+        else {
             //Not found
             callback(404);
         }
@@ -68,13 +75,19 @@ module.exports.getPersonById = function(id,callback){
 }
 
 
-module.exports.loginPerson = function (username,password,callback) {
-    person.find({"username":username, "password" : password},{"password" : 0, "username" : 0, "name" : 0,"lastname" : 0,"preposition" : 0},function (err, doc) {
-        if(doc.length){
+module.exports.loginPerson = function (username, password, callback) {
+    person.find({"username": username, "password": password}, {
+        "password": 0,
+        "username": 0,
+        "name": 0,
+        "lastname": 0,
+        "preposition": 0
+    }, function (err, doc) {
+        if (doc.length) {
             var a = JSON.parse(JSON.stringify(doc));
-            callback(err,a[0]);
+            callback(err, a[0]);
         }
-        else{
+        else {
             callback(403);
         }
     });

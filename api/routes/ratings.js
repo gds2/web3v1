@@ -5,17 +5,14 @@ rater = require('../models/ratings.js');
 module.exports = router;
 
 
-//Have to edit this a bit
+//User id is used in create rating so do something with the ticket there
 router.post("/", function (req, res) {
-    var userId = req.body.userid;
-    var ratingAmount = req.body.rating;
-    var imdb = req.body.imdb;
-    rater.createRating (imdb, userId, ratingAmount, function (err, newRating) {
+    rater.createRating (req, function (err) {
         if (err) {
-            if(err === 404){
-                res.sendStatus(404);
+            if(err === "Movie not found"){
+                res.send(err,404);
             }else {
-                res.sendStatus(400);
+                res.send(err,400);
             }
         }
         else {
@@ -41,9 +38,23 @@ router.get('', function (req, res) {
  * Get movies with their average rating
  */
 router.get('/average', function (req, res) {
-    rating.getAverageRatings(function (err, newRating) {
+    rating.getAverageRatings(req,function (err, newRating) {
         if (err) {
-            res.sendStatus(err);
+            res.send(err,404);
+        }
+        else {
+            res.json(newRating);
+        }
+    })
+})
+
+/**
+ * Get movies with their average rating with paging
+ */
+router.get('/average/page/:page', function (req, res) {
+    rating.getAverageRatings(req,function (err, newRating) {
+        if (err) {
+            res.send(err,404);
         }
         else {
             res.json(newRating);
@@ -58,7 +69,7 @@ router.delete('/:imdb', function (req, res) {
     id = "2340001223312110";
     rating.deleteRating(req.params.imdb,id,function (err, newRating) {
         if (err) {
-            res.sendStatus(err);
+            res.send(err, 404);
         }
         else {
             res.json(newRating);

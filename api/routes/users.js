@@ -4,11 +4,11 @@ var router = express.Router();
 person = require('../models/users.js');
 module.exports = router;
 
-router.get('/user/limit/:limit',function (req, res) {
-    var limit = parseInt(req.params.limit);
-    person.getPersons(limit,function (err, persons) {
+//Get persons with paging
+router.get('/page/:page',function (req, res) {
+    person.getPersons(req,function (err, persons) {
         if (err) {
-            res.sendStatus(err.message);
+            res.send(err,404);
         }
         res.json(persons);
     })
@@ -18,14 +18,14 @@ router.get('/user/limit/:limit',function (req, res) {
 router.get("",function (req, res) {
     person.getPersons(req,function (err, persons) {
         if (err) {
-            res.sendStatus(err.message);
+            res.send(err,404);
         }
         res.json(persons);
     })
 });
 
 
-
+/*
 router.get('/:_id', function (req, res) {
     person.getPersonById(req.params._id, function (err, person) {
         if (err) {
@@ -36,17 +36,19 @@ router.get('/:_id', function (req, res) {
         }
     })
 });
+*/
 
 //POST persons
 router.post("", function (req, res) {
-
     var user = req.body;
     person.createPerson(user, function (err, user) {
+        //Send a 400 code if an error occured
         if (err) {
-            res.sendStatus(400);
+            res.send(400, err);
         }
+        //Send a 200 code if everything went right
         else {
-            res.json(user);
+            res.sendStatus(200);
         }
     })
 });

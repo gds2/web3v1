@@ -29,27 +29,30 @@ var ratingModel = module.exports = mongoose.model('ratings', ratingSchema);
  * @param ratingAmount
  * @param callback
  */
-module.exports.createRating = function (imdb, userid, ratingAmount,callback) {
+module.exports.createRating = function (req,callback) {
+    var userid = req.body.userid;
+    var ratingAmount = req.body.rating;
+    var imdb = req.body.imdb;
     //Check if the inputs are correct
     if (typeof userid != 'undefined' && typeof ratingAmount != 'undefined' && typeof ratingAmount === "number") {
         if (ratingAmount <= 5 && ratingAmount >= 0.5) {
-            movie.findMovies(imdb,function (err,movie) {
+            movie.getMovies(imdb,function (err, movie) {
                 if(movie){
                     ratingModel.update( { userid: userid,  imdb : imdb}, {rating : ratingAmount }, { upsert : true }, callback );
                 }
                 else{
-                    callback(404)
+                    callback("Movie not found");
                 }
 
             })
 
         }
         else{
-            callback(400);
+            callback("Rating is not higher than 0.5 or lower than 5.1");
         }
     }
     else{
-        callback(400);
+        callback("userid needs to be defined, imdb needs to be defined and rating needs to be a number");
     }
 }
 
@@ -70,23 +73,55 @@ module.exports.getRatings = function (id,imdb,callback) {
     });
 }
 
-module.exports.getAverageRatings = function (callback) {
-    ratingModel.aggregate(
-        {"$lookup" : {"from": "movies", "localField": "imdb", "foreignField" : "imdb", "as" : "movie" }},
-        {"$unwind": "$movie"},
-        { "$group": {
-            "_id": "$_id",
-            "movie" : {"$push": "$movie"},
-            "average rating": { "$avg": "$rating" }
-        }}
-        , function (err,doc) {
-            if(doc.length){
-                callback(err,doc);
-            }
-            else{
-                callback(204);
-            }
-        });
+module.exports.getAverageRatings = function (req,callback) {
+    //Paging
+    var page = parseInt(req.params.page);
+    var pageEnd = page * 10;
+    var pageStart = pageEnd - 10;
+
+    //If paging requested
+    if(!isNaN(page)) {
+        ratingModel.aggregate(
+            {"$lookup": {"from": "movies", "localField": "imdb", "foreignField": "imdb", "as": "movie"}},
+            {"$unwind": "$movie"},
+            {
+                "$group": {
+                    "_id": "$_id",
+                    "movie": {"$push": "$movie"},
+                    "average rating": {"$avg": "$rating"}
+                }
+            },
+            {"$limit": pageEnd},
+            {"$skip": pageStart}
+            , function (err, doc) {
+                if (doc.length) {
+                    callback(err, doc);
+                }
+                else {
+                    callback("Nothing to show");
+                }
+            });
+    }
+    //No paging requested
+    else{
+        ratingModel.aggregate(
+            {"$lookup": {"from": "movies", "localField": "imdb", "foreignField": "imdb", "as": "movie"}},
+            {"$unwind": "$movie"},
+            {
+                "$group": {
+                    "_id": "$_id",
+                    "movie": {"$push": "$movie"},
+                    "average rating": {"$avg": "$rating"}
+                }
+            }, function (err, doc) {
+                if (doc.length) {
+                    callback(err, doc);
+                }
+                else {
+                    callback("Nothing to show");
+                }
+            });
+    }
 }
 
 /**
@@ -101,7 +136,7 @@ module.exports.deleteRating = function (imdb,id,callback) {
             ratingModel.remove({imdb: imdb, userid: id}, callback);
         }
         else{
-            callback(404);
+            callback("Rating not found");
         }
 
     })
