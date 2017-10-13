@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
-movie = require('../models/movies.js');
-var personSchema = new mongoose.Schema({
+var userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -25,7 +24,7 @@ var personSchema = new mongoose.Schema({
 
 });
 
-var person = module.exports = mongoose.model('persons', personSchema);
+var userModel = module.exports = mongoose.model('users', userSchema);
 
 module.exports.getPersons = function (req, callback) {
 
@@ -34,7 +33,7 @@ module.exports.getPersons = function (req, callback) {
     var query = req.query;
     var pageEnd = page * 10;
     var pageStart = pageEnd - 10;
-        person.find(query, {"password": 0}, {skip: pageStart, limit: pageEnd}, function (err, doc) {
+        userModel.find(query, {"password": 0}, {skip: pageStart, limit: pageEnd}, function (err, doc) {
             if (doc.length) {
                     callback(err, doc);
             }
@@ -47,13 +46,14 @@ module.exports.getPersons = function (req, callback) {
 
 }
 
-module.exports.createPerson = function (user, callback) {
-    person.find({"username": user.username}, function (err, doc) {
+module.exports.createPerson = function (req, callback) {
+    var user = req.body;
+    userModel.find({"username": user.username}, function (err, doc) {
         if (doc.length) {
             callback("Username already exists");
         }
         else {
-            person.create(user, callback);
+            userModel.create(user, callback);
         }
     })
 
@@ -62,7 +62,7 @@ module.exports.createPerson = function (user, callback) {
 
 
 module.exports.getPersonById = function (id, callback) {
-    person.findById(id, function (err, doc) {
+    userModel.findById(id, function (err, doc) {
         if (typeof doc != 'undefined') {
             callback(err, doc);
         }
@@ -76,7 +76,7 @@ module.exports.getPersonById = function (id, callback) {
 
 
 module.exports.loginPerson = function (username, password, callback) {
-    person.find({"username": username, "password": password}, {
+    userModel.find({"username": username, "password": password}, {
         "password": 0,
         "username": 0,
         "name": 0,

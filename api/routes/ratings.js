@@ -35,9 +35,14 @@ router.get('', function (req, res) {
 
 
 /**
- * Get movies with their average rating
+ * Get movies with their average rating without paging
  */
 router.get('/average', function (req, res) {
+    getAverage(req,res);
+})
+
+//Function for getting the average raing
+function getAverage(req,res) {
     rating.getAverageRatings(req,function (err, newRating) {
         if (err) {
             res.send(err,404);
@@ -46,20 +51,12 @@ router.get('/average', function (req, res) {
             res.json(newRating);
         }
     })
-})
-
+}
 /**
  * Get movies with their average rating with paging
  */
 router.get('/average/page/:page', function (req, res) {
-    rating.getAverageRatings(req,function (err, newRating) {
-        if (err) {
-            res.send(err,404);
-        }
-        else {
-            res.json(newRating);
-        }
-    })
+    getAverage(req,res);
 })
 
 /**

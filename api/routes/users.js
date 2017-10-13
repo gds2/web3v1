@@ -1,47 +1,35 @@
 //All the routes for the users
 var express = require('express');
 var router = express.Router();
-person = require('../models/users.js');
+user = require('../models/users.js');
 module.exports = router;
 
 //Get persons with paging
 router.get('/page/:page',function (req, res) {
-    person.getPersons(req,function (err, persons) {
-        if (err) {
-            res.send(err,404);
-        }
-        res.json(persons);
-    })
+    getUsers(req,res);
 });
 
-//GET persons
+//GET persons without paging
 router.get("",function (req, res) {
-    person.getPersons(req,function (err, persons) {
+    getUsers(req,res);
+});
+
+//Function for getting the users
+function getUsers(req,res){
+    user.getPersons(req,function (err, persons) {
         if (err) {
             res.send(err,404);
         }
         res.json(persons);
     })
-});
+}
 
 
-/*
-router.get('/:_id', function (req, res) {
-    person.getPersonById(req.params._id, function (err, person) {
-        if (err) {
-            res.sendStatus(err);
-        }
-        else{
-            res.json(person)
-        }
-    })
-});
-*/
 
-//POST persons
+//Creating a new user
 router.post("", function (req, res) {
-    var user = req.body;
-    person.createPerson(user, function (err, user) {
+
+    user.createPerson(req, function (err, user) {
         //Send a 400 code if an error occured
         if (err) {
             res.send(400, err);

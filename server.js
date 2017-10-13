@@ -29,6 +29,6 @@ app.listen(3000);
 console.log('Api on 3000');
 
 
-person = require('./api/models/users.js');
+user = require('./api/models/users.js');
 movie = require('./api/models/movies.js');
 rating = require('./api/models/ratings.js');

@@ -5,31 +5,34 @@ movie = require('../models/movies.js');
 module.exports = router;
 
 
-///GET movies
+///GET movies without paging
 router.get('', function (req, res) {
+    getMovies(req,res);
+});
+
+//Function for getting the movies
+function getMovies(req,res){
     movie.getMovies(req,function (err, movies) {
-        if (err) {
+        if(err === 400){
+            res.send(err);
+        }
+        else if (err  !== 400 && err !== null) {
             res.send(err,404);
         }
         res.json(movies);
     })
-});
+}
 
 ///GET movies with paging
 router.get('/page/:page', function (req, res) {
-    movie.getMovies(req,function (err, movies) {
-        if (err) {
-            res.send(err,404);
-        }
-        res.json(movies);
-    })
+    getMovies(req,res);
 });
 
 //post movies HAS TO GO LATER
-router.post('/movies/', function (req, res) {
+router.post('', function (req, res) {
     movie.createMovies(req.body,function (err, movies) {
         if (err) {
-            res.sendStatus(err.message);
+            res.send(err);
         }
         res.json(movies);
     })

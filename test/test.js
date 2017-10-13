@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var app = express();
 app.use(bodyParser.json());
 var server = supertest.agent("http://localhost:3000/");
-person = require('../api/models/users.js');
+user = require('../api/models/users.js');
 
 //Good weather tests for api/users
 

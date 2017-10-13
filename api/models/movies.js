@@ -4,23 +4,23 @@ var movieSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    titel: {
+    title: {
         type: String,
         required: true
     },
     datum: {
+        type: Date,
+        required: true
+    },
+    length: {
         type: String,
         required: true
     },
-    lengte: {
+    director: {
         type: String,
         required: true
     },
-    regisseur: {
-        type: String,
-        required: true
-    },
-    beschrijving: {
+    description: {
         type: String,
         required: true
     }
@@ -37,14 +37,20 @@ module.exports.getMovies = function (req, callback) {
     var pageStart = pageEnd - 10;
     //Get the movies. Password is zero for if a hacker tries to be smart
     movie.find(query, {"password": 0}, {skip: pageStart, limit: pageEnd}, function (err, doc) {
-        if (doc.length) {
-            callback(err, doc);
+        if(typeof doc != 'undefined') {
+            if (doc.length) {
+                callback(err, doc);
+            }
+            else {
+                callback("Nothing to show");
+            }
         }
-        else {
-            callback("Nothing to show");
+        else{
+            callback(400)
         }
     });
 }
+
 //has to go
 module.exports.createMovies = function (movie, callback) {
     try {
