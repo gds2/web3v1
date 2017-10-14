@@ -23,8 +23,9 @@ function getUsers(req,res){
     user.getUsers(req,function (err, persons) {
         if (err) {
             res.send(err,404);
+        }else {
+            res.json(persons);
         }
-        res.json(persons);
     })
 }
 

@@ -27,7 +27,9 @@ function getMovies(req,res){
         else if (err  !== 400 && err !== null) {
             res.send(err,404);
         }
-        res.json(movies);
+        else {
+            res.json(movies);
+        }
     })
 }
 
@@ -37,7 +39,8 @@ router.post('', function (req, res) {
     movie.createMovies(req.body,function (err, movies) {
         if (err) {
             res.send(err);
+        }else {
+            res.json(movies);
         }
-        res.json(movies);
     })
 });
