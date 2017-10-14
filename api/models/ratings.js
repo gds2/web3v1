@@ -152,10 +152,6 @@ module.exports.deleteRating = function (imdb,id,callback) {
         else{
             callback("Rating not found");
         }
-
     })
-
-
-
 };
 

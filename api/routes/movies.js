@@ -20,17 +20,29 @@ router.get('/page/:page', function (req, res) {
 
 //Function for getting the movies
 function getMovies(req,res){
-    movie.getMovies(req,function (err, movies) {
-        if(err === 400){
-            res.send(err,400);
+    token = req.headers['authorization'];
+
+    jwt.verify(token, req.app.get('private-key'), function (err,decoded) {
+        if(err){
+            res.send(err,401).json({error:"Invalid token"});
+        }else {
+            movie.getMovies(req,function (err, movies) {
+                if(err === 400){
+                    res.send(err,400);
+                }
+                else if (err  !== 400 && err !== null) {
+                    res.send(err,404);
+                }
+                else {
+                    res.json(movies);
+                }
+            });
         }
-        else if (err  !== 400 && err !== null) {
-            res.send(err,404);
-        }
-        else {
-            res.json(movies);
-        }
-    })
+    });
+
+
+
+
 }
 
 

@@ -75,8 +75,8 @@ module.exports.createUser = function (req, callback) {
 };
 
 
-module.exports.loginUser = function (username, password, callback) {
-    userModel.find({"username": username, "password" : password}, {
+module.exports.loginUser = function (req, callback) {
+    userModel.find({"username": req.body.username, "password" : req.body.password}, {
         "password" : 0,
         "username": 0,
         "name": 0,

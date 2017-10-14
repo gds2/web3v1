@@ -20,13 +20,21 @@ router.get("",function (req, res) {
 
 //Function for getting the users
 function getUsers(req,res){
-    user.getUsers(req,function (err, persons) {
-        if (err) {
-            res.send(err,404);
+    token = req.headers['authorization'];
+
+    jwt.verify(token, req.app.get('private-key'), function (err,decoded) {
+        if(err){
+            res.send(err,401).json({error:"Invalid token"});
         }else {
-            res.json(persons);
+            user.getUsers(req,function (err, persons) {
+                if (err) {
+                    res.send(err,404);
+                }else {
+                    res.json(persons);
+                }
+            });
         }
-    })
+    });
 }
 
 

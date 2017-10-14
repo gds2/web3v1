@@ -10,8 +10,9 @@ app.use(bodyParser.json());
 var server = supertest.agent("http://localhost:3000/");
 user = require('../api/models/users.js');
 
-//Good weather tests for api/users
-
+/**
+ * Good weather tests for api/users
+ */
 
 describe("Post a full body to the users", function () {
     it("Should return a json file and a 200 code", function (done) {
@@ -54,12 +55,9 @@ describe("Get users by using paging", function () {
 });
 
 
-
-
-
-
- //Bad weather tests for  /api/users/
-
+/**
+ * Bad weather tests for  /api/users
+ */
 
 describe("Post a full body to the users without a token", function () {
     it("Should return a 403 code", function (done) {
@@ -166,21 +164,64 @@ describe("Post a body without a last name to the users", function () {
 /**
  * Good weather tests for api/movies
  */
-describe("Try getting the movies", function () {
+describe("Try getting the movies with a token", function () {
     it("Should return a json file", function (done) {
         server.get("api/movies").expect("Content-type", /json/).expect(200, done);
     });
 });
 
+/**
+ * Bad weather tests for api/movies
+ */
+describe("Try getting the movies without a token", function () {
+    it("Should return a 401 error Invalid token", function (done) {
+        server.get("api/movies").expect("Content-type", /json/).expect(401, done);
+    });
+});
 
 /**
  * Good weather tests for api/ratings
  */
+describe("Post a full body to the ratings", function () {
+    it("Should return a json body", function (done) {
+        server.post("api/ratings").send({
+            "userid": "tester",
+            "ratingAmount" : "5",
+            "imdb": "123"}).set('Accept', /application\/json/).expect(200,done);
+    });
+});
 
+describe("Delete a rating using the userid and the imdb", function () {
+    it("Should return an OK response", function (done) {
+        server.delete("api/ratings").send({
+            "userid": "tester",
+            "imdb": "123"}).set('Accept', /application\/json/).expect(200,done);
+    });
+});
 /**
  * Bad weather tests for api/ratings
  */
+describe("Post an empty body to the ratings", function () {
+    it("Should return an error 400 saying that not all variables are defined", function (done) {
+        server.post("api/ratings").send({}).set('Accept', /application\/json/).expect(400,done);
+    });
+});
 
+describe("Post a body to the ratings with a rating higher than 5", function () {
+    it("Should return an error 400 Rating is not higher than 0.5 or lower than 5.1", function (done) {
+        server.post("api/ratings").send({
+            "userid" : "tester",
+            "ratingAmount" : "6",
+            "imdb" : "123"}).set('Accept', /application\/json/).expect(400,done);
+    });
+});
+
+describe("Delete a rating by posting a userId but not an imdb id", function () {
+    it("Should return an 404 not found error", function (done) {
+        server.delete("api/ratings").send({
+            "userid": "tester"}).set('Accept', /application\/json/).expect(404,done);
+    });
+});
 /**
  * Good weather tests for /auth
  */
