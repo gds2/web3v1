@@ -2,6 +2,8 @@
  *The model for the users
  */
 var mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+
 var userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -26,7 +28,9 @@ var userSchema = new mongoose.Schema({
     }
 
 });
-
+/**
+ * Exporting the userModel
+ */
 var userModel = module.exports = mongoose.model('users', userSchema);
 
 /**
@@ -62,6 +66,7 @@ module.exports.createUser = function (req, callback) {
             callback("Username already exists");
         }
         else {
+
             userModel.create(user, callback);
         }
     })
@@ -71,8 +76,8 @@ module.exports.createUser = function (req, callback) {
 
 
 module.exports.loginUser = function (username, password, callback) {
-    userModel.find({"username": username, "password": password}, {
-        "password": 0,
+    userModel.find({"username": username, "password" : password}, {
+        "password" : 0,
         "username": 0,
         "name": 0,
         "lastname": 0,
@@ -80,7 +85,18 @@ module.exports.loginUser = function (username, password, callback) {
     }, function (err, doc) {
         if (doc.length) {
             var a = JSON.parse(JSON.stringify(doc));
-            callback(err, a[0]);
+            //var hashedPassword = a[0].password;
+            //Compare passwords
+            //bcrypt.compare(password, hashedPassword, function(err, res) {
+                //if(res) {
+                    // Passwords match
+                   // a[0].password = 0;
+                    callback(err, a[0]);
+               // } else {
+                    // Passwords don't match
+                    //callback(403);
+               // }
+            //});
         }
         else {
             callback(403);

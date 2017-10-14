@@ -12,7 +12,7 @@ var movieSchema = new mongoose.Schema({
         required: true
     },
     datum: {
-        type: Date,
+        type: String,
         required: true
     },
     length: {
@@ -28,11 +28,17 @@ var movieSchema = new mongoose.Schema({
         required: true
     }
 });
-
+/**
+ * Exporting the moviesModel
+ */
 var moviesModel = module.exports = mongoose.model('movies', movieSchema);
 
 
-
+/**
+ * Get all of the movies in the database, this function can be used with paging ot without it
+ * @param req
+ * @param callback
+ */
 module.exports.getMovies = function (req, callback) {
     var page = parseInt(req.params.page);
     var query = req.query;

@@ -12,15 +12,15 @@ user = require('../api/models/users.js');
 
 //Good weather tests for api/users
 
-describe("Users unittest", function () {
+describe("Get all of the users", function () {
     it("Should return a json file", function (done) {
-        server.get("api/persons").expect("Content-type", /json/).expect(200, done);
+        server.get("api/users").expect("Content-type", /json/).expect(200, done);
     });
 });
 
 describe("Post a full body to the users", function () {
     it("Should return a json file and a 200 code", function (done) {
-        server.post("api/persons").send({
+        server.post("api/users").send({
             "name": "test",
             "lastname": "tester",
             "preposition" : "de",
@@ -31,7 +31,7 @@ describe("Post a full body to the users", function () {
 
 describe("Post a body without a prepostion to the users", function () {
     it("Should return a json file and a 200 code", function (done) {
-        server.post("api/persons").send({
+        server.post("api/users").send({
             "name": "test",
             "lastname": "tester",
             "password": "test22",
@@ -40,17 +40,17 @@ describe("Post a body without a prepostion to the users", function () {
 });
 
 
- //Bad weather tests for  /api/persons/
+ //Bad weather tests for  /api/users/
 
 describe("Post an empty body to the users", function () {
     it("Should return a 400 code", function (done) {
-        server.post("api/persons").send({}).set('Accept', /application\/json/).expect(400,done);
+        server.post("api/users").send({}).set('Accept', /application\/json/).expect(400,done);
     });
 });
 
 describe("Post a body without a password to the users", function () {
     it("Should return a 400 code", function (done) {
-        server.post("api/persons").send({"name": "test",
+        server.post("api/users").send({"name": "test",
             "lastname": "tester",
             "preposition" : "de",
             "username": "koek"}).set('Accept', /application\/json/).expect(400,done);
@@ -59,7 +59,7 @@ describe("Post a body without a password to the users", function () {
 
 describe("Post a body without an username to the users", function () {
     it("Should return a 400 code", function (done) {
-        server.post("api/persons").send({
+        server.post("api/users").send({
             "name": "test",
             "lastname": "tester",
             "preposition" : "de",
@@ -68,12 +68,6 @@ describe("Post a body without an username to the users", function () {
     });
 });
 
-describe("dw",function () {
-    it("Should return "),function (done) {
-        server.post("api/auth")
-    }
-
-})
 
 describe("Post a body without a name to the users", function () {
     it("Should return a 400 code", function (done) {
@@ -106,7 +100,74 @@ describe("Try getting the movies", function () {
 });
 
 
+/**
+ * Good weather tests for api/ratings
+ */
+
+/**
+ * Bad weather tests for api/ratings
+ */
+
+/**
+ * Good weather tests for /auth
+ */
+describe("Post a body with username and password to try to login",function () {
+    it("Should return a jasonwebtoken object containing an encrypted userId"),function (done) {
+        server.post("/auth").send({
+            "username" : "Username",
+            "password" : "123456"
+        }).set('Accept',/application\/json/).expect(201,done);
+    }
+})
+
+/**
+ * Bad weather tests for /auth
+ */
+
+describe("Post an empty body to /auth",function () {
+    it("Should return an error code 400 empty username or password"),function (done) {
+        server.post("/auth").send({
+            "username" : "Username",
+            "password" : "123456"
+        }).set('Accept',/application\/json/).expect(400,done);
+    }
+})
 
 
+describe("Post a body without a username",function () {
+    it("Should return an error code 400 empty username or password"),function (done) {
+        server.post("/auth").send({
+            "password" : "123456"
+        }).set('Accept',/application\/json/).expect(400,done);
+    }
+})
+
+
+describe("Post a body without a password",function () {
+    it("Should return an error code 400 empty username or password"),function (done) {
+        server.post("/auth").send({
+            "username" : "username"
+        }).set('Accept',/application\/json/).expect(400,done);
+    }
+})
+
+describe("Post a body without a username",function () {
+    it("Should return an error code 40e username/password combination does not exist"),function (done) {
+        server.post("/auth").send({
+            "username" : "wrongUsername",
+            "password" : "correctPassword"
+        }).set('Accept',/application\/json/).expect(400,done);
+    }
+})
+
+
+describe("Post a body with correct username but wrong password",function () {
+    it("Should return an error code 403 username/password combination does not exist"),function (done) {
+        server.post("/auth").send({
+            "username" : "correctUsername",
+            "password" : "wrongPassword"
+        }).set('Accept',/application\/json/).expect(403,done);
+    }
+})
 
 

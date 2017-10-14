@@ -3,6 +3,7 @@
  */
 var express = require('express');
 var router = express.Router();
+var jwt = require('jsonwebtoken');
 movie = require('../models/movies.js');
 module.exports = router;
 

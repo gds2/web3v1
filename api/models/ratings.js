@@ -22,16 +22,19 @@ var ratingSchema = new mongoose.Schema({
     }
 });
 
+/**
+ * Exporting the ratingModel
+ */
 var ratingModel = module.exports = mongoose.model('ratings', ratingSchema);
 
 
 /**
- * Create a new rating
+ * Create a new rating using the usersid, the amount of rating and the movie id(imdb)
  * @param req
  * @param callback
  */
-module.exports.createRating = function (req,callback) {
-    var userid = req.body.userid;
+module.exports.createRating = function (req,userId,callback) {
+    var userid = userId;
     var ratingAmount = req.body.rating;
     var imdb = req.body.imdb;
     //Check if the inputs are correct
@@ -79,6 +82,11 @@ module.exports.getRatings = function (id,imdb,callback) {
     });
 };
 
+/**
+ * The the average rating of a movie, this function can used with paging or without it
+ * @param req
+ * @param callback
+ */
 module.exports.getAverageRatings = function (req,callback) {
     //Paging
     var page = parseInt(req.params.page);
@@ -131,13 +139,13 @@ module.exports.getAverageRatings = function (req,callback) {
 };
 
 /**
- * Needs to be tested
+ * This function will delete a rating by a user using the movie's imdb and the user's id
  * @param imdb
  * @param id
  * @param callback
  */
 module.exports.deleteRating = function (imdb,id,callback) {
-    ratingModel.findone({imdb: imdb, userid : id}, function (err,doc) {
+    ratingModel.find({imdb: imdb, userid : id}, function (err,doc) {
         if(doc.length) {
             ratingModel.remove({imdb: imdb, userid: id}, callback);
         }

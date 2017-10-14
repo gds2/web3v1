@@ -3,8 +3,10 @@
  */
 var express = require('express');
 var router = express.Router();
+var jwt = require('jsonwebtoken');
 user = require('../models/users.js');
 module.exports = router;
+
 
 //Get persons with paging
 router.get('/page/:page',function (req, res) {
