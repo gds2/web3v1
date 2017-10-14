@@ -12,11 +12,6 @@ user = require('../api/models/users.js');
 
 //Good weather tests for api/users
 
-describe("Get all of the users", function () {
-    it("Should return a json file", function (done) {
-        server.get("api/users").expect("Content-type", /json/).expect(200, done);
-    });
-});
 
 describe("Post a full body to the users", function () {
     it("Should return a json file and a 200 code", function (done) {
@@ -25,7 +20,7 @@ describe("Post a full body to the users", function () {
             "lastname": "tester",
             "preposition" : "de",
             "password": "test22",
-            "username": "koek"}).set('Accept', /application\/json/).expect('Content-type', /json/).expect(200,done);
+            "username": "testuser"}).expect(200,done);
     });
 });
 
@@ -35,18 +30,96 @@ describe("Post a body without a prepostion to the users", function () {
             "name": "test",
             "lastname": "tester",
             "password": "test22",
-            "username": "koek"}).set('Accept', /application\/json/).expect('Content-type', /json/).expect(200,done);
+            "username": "testuser2"}).set.expect(200,done);
     });
 });
 
 
+describe("Get all of the users without sending parameters", function () {
+    it("Should return a json file", function (done) {
+        server.get("api/users").expect("Content-type", /json/).expect(200, done);
+    });
+});
+
+describe("Get users while giving parameters", function () {
+    it("Should return a json file and a 200 code", function (done) {
+        server.get("api/users?username=testuser").expect("Content-type", /json/).expect(200, done);
+    });
+});
+
+describe("Get users by using paging", function () {
+    it("Should return a json file and a 200 code", function (done) {
+        server.get("api/users/page/1").expect("Content-type", /json/).expect(200, done);
+    });
+});
+
+
+
+
+
+
  //Bad weather tests for  /api/users/
+
+
+describe("Post a full body to the users without a token", function () {
+    it("Should return a 403 code", function (done) {
+        server.post("api/users").send({
+            "name": "test",
+            "lastname": "tester",
+            "preposition" : "de",
+            "password": "test22",
+            "username": "testuser5"}).expect(403,done);
+    });
+});
+
+describe("Post  users without an username that already exists", function () {
+    it("Should return a 403 code", function (done) {
+        server.post("api/users").send({
+            "name": "test",
+            "lastname": "tester",
+            "preposition" : "de",
+            "password": "test22",
+            "username": "testuser"}).expect(400,done);
+    });
+});
+
+
+describe("Get all of the users without a token", function () {
+    it("Should return a 403 code", function (done) {
+        server.get("api/users").expect(403, done);
+    });
+});
+
+describe("Get users while giving parameters of a user that doesnt exist", function () {
+    it("Should return a json file and a 200 code", function (done) {
+        server.get("api/users?username=bladhjsgdghjdfjdsbgfjdsfjdhs").expect(404, done);
+    });
+});
 
 describe("Post an empty body to the users", function () {
     it("Should return a 400 code", function (done) {
         server.post("api/users").send({}).set('Accept', /application\/json/).expect(400,done);
     });
 });
+
+describe("Post a wrong type of body to the users", function () {
+    it("Should return a 400 code", function (done) {
+        server.post("api/users").send(",,,,,,,,,,,}").expect(400,done);
+    });
+});
+
+describe("Get users by using a letter instead of a number by paging", function () {
+    it("Should return a json file and a 200 code", function (done) {
+        server.get("api/users/page/a").expect("Content-type", /json/).expect(200, done);
+    });
+});
+
+describe("Try getting users from a page that doesnt have any users", function () {
+    it("Should return a 404 code", function (done) {
+        server.get("api/users/page/1000000").expect(404, done);
+    });
+});
+
 
 describe("Post a body without a password to the users", function () {
     it("Should return a 400 code", function (done) {
@@ -71,7 +144,7 @@ describe("Post a body without an username to the users", function () {
 
 describe("Post a body without a name to the users", function () {
     it("Should return a 400 code", function (done) {
-        server.post("api/persons").send({
+        server.post("api/users").send({
             "lastname": "tester",
             "preposition" : "de",
             "password": "test22",
