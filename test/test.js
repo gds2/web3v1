@@ -153,7 +153,7 @@ describe("Post a body without a last name to the users", function () {
  * Good weather tests for api/ratings
  */
 
-describe("Post a full body to the ratings", function () {
+describe("Post a full body to the ratings/update rating", function () {
     it("Should return a 200 code", function (done) {
         server.post("api/ratings").send({
             "userid":"2343",
@@ -164,22 +164,187 @@ describe("Post a full body to the ratings", function () {
 });
 
 
+describe("get a list of average ratings", function () {
+    it("Should return a 200 code", function (done) {
+        server.get("api/ratings/average").expect(expect("Content-type", /json/).expect(200,done));
+    });
+});
+
+describe("get a list of average ratings by using paging", function () {
+    it("Should return a 200 code", function (done) {
+        server.get("api/ratings/average/page/1").expect(expect("Content-type", /json/).expect(200,done));
+    });
+});
+
+describe("Delete a rating", function () {
+    it("Should return a 200 code", function (done) {
+        server.delete("api/ratings/123").expect(200,done);
+    });
+});
+
+
+/**
+ * Bad weather tests for api/ratings
+ */
+
+
+describe("Post a full body to the ratings without a token", function () {
+    it("Should return a 401 code", function (done) {
+        server.post("api/ratings").send({
+            "rating": 5,
+            "imdb" : "123"
+        }).set('Accept', /application\/json/).expect(401,done);
+    });
+});
+
+
+describe("Post a rating to a movie that doesnt exist", function () {
+    it("Should return a 404 code", function (done) {
+        server.post("api/ratings").send({
+            "rating": 5,
+            "imdb" : "12300003400430430434343"
+        }).set('Accept', /application\/json/).expect(404,done);
+    });
+});
+
+describe("Post a rating that doesnt have an imdb", function () {
+    it("Should return a 400 code", function (done) {
+        server.post("api/ratings").send({
+            "rating": 5
+        }).set('Accept', /application\/json/).expect(400,done);
+    });
+});
+
+describe("Post a rating that doesnt have a rating amount", function () {
+    it("Should return a 400 code", function (done) {
+        server.post("api/ratings").send({
+            "imdb": "123"
+        }).set('Accept', /application\/json/).expect(400,done);
+    });
+});
+
+describe("Post a wrong json format to the ratings", function () {
+    it("Should return a 400 code", function (done) {
+        server.post("api/ratings").send(",,,,fds,fsf,sfsjkl;:::").set('Accept', /application\/json/).expect(400,done);
+    });
+});
+
+describe("Post an empty json  to the ratings", function () {
+    it("Should return a 400 code", function (done) {
+        server.post("api/ratings").send({}).set('Accept', /application\/json/).expect(400,done);
+    });
+});
+
+describe("get a list of average ratings without a token", function () {
+    it("Should return a 401 code", function (done) {
+        server.get("api/ratings/average").expect(401,done);
+    });
+});
+
+describe("try getting a list of average ratings by using a page that doenst exist", function () {
+    it("Should return a 404 code", function (done) {
+        server.get("api/ratings/average/page/120000").expect(404,done);
+    });
+});
+
+
+describe("try getting a list of average ratings by using a letter instead of a number at paging", function () {
+    it("Should return a 200 code", function (done) {
+        server.get("api/ratings/average/page/120000").expect("Content-type", /json/).expect(200,done);
+    });
+});
+
+describe("Delete a rating without a token", function () {
+    it("Should return a 401 code", function (done) {
+        server.delete("api/ratings/123").expect(401,done);
+    });
+});
+
+describe("Delete a rating that doesnt exist", function () {
+    it("Should return a 404 code", function (done) {
+        server.delete("api/ratings/123").expect(404,done);
+    });
+});
+
+
+describe("Post a rating with the rating amount not being a number ", function () {
+    it("Should return a 400 code", function (done) {
+        server.post("api/ratings").send({
+            "userid":"2343",
+            "rating": "5",
+            "imdb" : "123"
+        }).set('Accept', /application\/json/).expect(400,done);
+    });
+});
+
+
+describe("Post a rating with the rating amount being lower than 0.5 ", function () {
+    it("Should return a 200 code", function (done) {
+        server.post("api/ratings").send({
+            "userid":"2343",
+            "rating": 0.4,
+            "imdb" : "123"
+        }).set('Accept', /application\/json/).expect(400,done);
+    });
+});
+
+describe("Post a rating with the rating amount being higher than 5 ", function () {
+    it("Should return a 200 code", function (done) {
+        server.post("api/ratings").send({
+            "userid":"2343",
+            "rating": 6,
+            "imdb" : "123"
+        }).set('Accept', /application\/json/).expect(400,done);
+    });
+});
 
 /**
  * Good weather tests for api/movies
  */
-describe("Try getting the movies with a token", function () {
-    it("Should return a json file", function (done) {
+describe("Try getting the movies", function () {
+    it("Should return a json file and a 200 code", function (done) {
         server.get("api/movies").expect("Content-type", /json/).expect(200, done);
     });
 });
+
+describe("Try getting the movies by using paging", function () {
+    it("Should return a json file and a 200 code", function (done) {
+        server.get("api/movies/page1").expect("Content-type", /json/).expect(200, done);
+    });
+});
+
+describe("Try getting the movies by using certain parameters in the url", function () {
+    it("Should return a json file and a 200 code", function (done) {
+        server.get("api/movies?imdb=123").expect("Content-type", /json/).expect(200, done);
+    });
+});
+
+
 
 /**
  * Bad weather tests for api/movies
  */
 describe("Try getting the movies without a token", function () {
     it("Should return a 401 error Invalid token", function (done) {
-        server.get("api/movies").expect("Content-type", /json/).expect(401, done);
+        server.get("api/movies").expect(401, done);
+    });
+});
+
+describe("Try getting the movies by using a page that doesnt have any data", function () {
+    it("Should return a json file and a 404 code", function (done) {
+        server.get("api/movies/page/2323233").expect(404, done);
+    });
+});
+
+describe("Try getting the movies by using a letter as a  page number", function () {
+    it("Should return a json file and a 200 code", function (done) {
+        server.get("api/movies/page/a").expect("Content-type", /json/).expect(200, done);
+    });
+});
+
+describe("Try getting a movie that doest have the parameters in the url", function () {
+    it("Should return a json file and a 404 code", function (done) {
+        server.get("api/movies?imdb=12233343534535343").expect(404, done);
     });
 });
 
@@ -230,62 +395,62 @@ describe("Delete a rating by posting a userId but not an imdb id", function () {
  * Good weather tests for /auth
  */
 describe("Post a body with username and password to try to login",function () {
-    it("Should return a jasonwebtoken object containing an encrypted userId"),function (done) {
+    it("Should return a jasonwebtoken object containing an encrypted userId",function (done) {
         server.post("/auth").send({
             "username" : "Username",
             "password" : "123456"
         }).set('Accept',/application\/json/).expect(201,done);
-    }
-})
+    })
+});
 
 /**
  * Bad weather tests for /auth
  */
 
 describe("Post an empty body to /auth",function () {
-    it("Should return an error code 400 empty username or password"),function (done) {
+    it("Should return an error code 400 empty username or password",function (done) {
         server.post("/auth").send({
             "username" : "Username",
             "password" : "123456"
         }).set('Accept',/application\/json/).expect(400,done);
-    }
-})
+    })
+});
 
 
 describe("Post a body without a username",function () {
-    it("Should return an error code 400 empty username or password"),function (done) {
+    it("Should return an error code 400 empty username or password" ,function (done) {
         server.post("/auth").send({
             "password" : "123456"
         }).set('Accept',/application\/json/).expect(400,done);
-    }
-})
+    })
+});
 
 
 describe("Post a body without a password",function () {
-    it("Should return an error code 400 empty username or password"),function (done) {
+    it("Should return an error code 400 empty username or password",function (done) {
         server.post("/auth").send({
             "username" : "username"
         }).set('Accept',/application\/json/).expect(400,done);
-    }
-})
+    })
+});
 
 describe("Post a body without a username",function () {
-    it("Should return an error code 40e username/password combination does not exist"),function (done) {
+    it("Should return an error code 40e username/password combination does not exist",function (done) {
         server.post("/auth").send({
             "username" : "wrongUsername",
             "password" : "correctPassword"
         }).set('Accept',/application\/json/).expect(400,done);
-    }
-})
+    })
+});
 
 
 describe("Post a body with correct username but wrong password",function () {
-    it("Should return an error code 403 username/password combination does not exist"),function (done) {
+    it("Should return an error code 403 username/password combination does not exist",function (done) {
         server.post("/auth").send({
             "username" : "correctUsername",
             "password" : "wrongPassword"
         }).set('Accept',/application\/json/).expect(403,done);
-    }
-})
+    })
+});
 
 

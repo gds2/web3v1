@@ -31,6 +31,7 @@ var ratingModel = module.exports = mongoose.model('ratings', ratingSchema);
 /**
  * Create a new rating using the usersid, the amount of rating and the movie id(imdb)
  * @param req
+ * @param userId
  * @param callback
  */
 module.exports.createRating = function (req,userId,callback) {
@@ -140,11 +141,12 @@ module.exports.getAverageRatings = function (req,callback) {
 
 /**
  * This function will delete a rating by a user using the movie's imdb and the user's id
- * @param imdb
+ * @param req
  * @param id
  * @param callback
  */
-module.exports.deleteRating = function (imdb,id,callback) {
+module.exports.deleteRating = function (req,id,callback) {
+ var imdb = req.body.imdb;
     ratingModel.find({imdb: imdb, userid : id}, function (err,doc) {
         if(doc.length) {
             ratingModel.remove({imdb: imdb, userid: id}, callback);
