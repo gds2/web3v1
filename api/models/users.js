@@ -2,7 +2,7 @@
  *The model for the users
  */
 var mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
 
 var userSchema = new mongoose.Schema({
     name: {

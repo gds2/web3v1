@@ -59,19 +59,9 @@ describe("Get users by using paging", function () {
  * Bad weather tests for  /api/users
  */
 
-describe("Post a full body to the users without a token", function () {
-    it("Should return a 403 code", function (done) {
-        server.post("api/users").send({
-            "name": "test",
-            "lastname": "tester",
-            "preposition" : "de",
-            "password": "test22",
-            "username": "testuser5"}).expect(403,done);
-    });
-});
 
 describe("Post  users without an username that already exists", function () {
-    it("Should return a 403 code", function (done) {
+    it("Should return a 400 code", function (done) {
         server.post("api/users").send({
             "name": "test",
             "lastname": "tester",
@@ -83,8 +73,8 @@ describe("Post  users without an username that already exists", function () {
 
 
 describe("Get all of the users without a token", function () {
-    it("Should return a 403 code", function (done) {
-        server.get("api/users").expect(403, done);
+    it("Should return a 401 code", function (done) {
+        server.get("api/users").expect(401, done);
     });
 });
 
@@ -152,10 +142,24 @@ describe("Post a body without a name to the users", function () {
 
 describe("Post a body without a last name to the users", function () {
     it("Should return a 400 code", function (done) {
-        server.post("api/persons").send({"name": "test",
+        server.post("api/users").send({"name": "test",
             "preposition" : "de",
             "password": "test22",
             "username": "koek"}).set('Accept', /application\/json/).expect(400,done);
+    });
+});
+
+/**
+ * Good weather tests for api/ratings
+ */
+
+describe("Post a full body to the ratings", function () {
+    it("Should return a 200 code", function (done) {
+        server.post("api/ratings").send({
+            "userid":"2343",
+                "rating": 5,
+            "imdb" : "123"
+        }).set('Accept', /application\/json/).expect(200,done);
     });
 });
 
