@@ -14,22 +14,6 @@ user = require('../api/models/users.js');
  * Good weather tests for api/users
  */
 
-/**
- *
- *
- *
- *
- *
- *
- *
- * START THESE FIRST
- *
- *
- *
- *
- *
- *
- */
 
 describe("Post a full body to the users", function () {
     it("Should return a json file and a 200 code", function (done) {
@@ -52,22 +36,7 @@ describe("Post a body without a prepostion to the users", function () {
     });
 });
 
-/**
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- */
+
 
 
 
@@ -76,7 +45,7 @@ describe("Post a body without a prepostion to the users", function () {
 /**
  * Created zo all the tests use the same token
  */
-describe("Start all the other tests", function () {
+describe("Start all the tests", function () {
     var token = null;
     before(function (done) {
         request.post(
@@ -90,11 +59,56 @@ describe("Start all the other tests", function () {
         );
     });
 
+    describe("Post a full body to the users", function () {
+        it("Should return a json file and a 200 code", function (done) {
+            server.post("api/users").send({
+                "name": "test",
+                "lastname": "tester",
+                "preposition" : "de",
+                "password": "test22",
+                "username": "testuser"}).expect(200,done);
+        });
+    });
+
+    describe("Post a body without a prepostion to the users", function () {
+        it("Should return a json file and a 200 code", function (done) {
+            server.post("api/users").send({
+                "name": "test",
+                "lastname": "tester",
+                "password": "test22",
+                "username": "testuser2"}).set.expect(200,done);
+        });
+    });
+
+
 describe("Get all of the users without sending parameters", function () {
     it("Should return a json file", function (done) {
         server.get("api/users").set('Authorization',  token).expect("Content-type", /json/).expect(200,done);
     });
 });
+
+
+    describe("Post a full body to the users", function () {
+        it("Should return a json file and a 200 code", function (done) {
+            server.post("api/users").send({
+                "name": "test",
+                "lastname": "tester",
+                "preposition" : "de",
+                "password": "test22",
+                "username": "testuser"}).expect(200,done);
+        });
+    });
+
+    describe("Post a body without a prepostion to the users", function () {
+        it("Should return a json file and a 200 code", function (done) {
+            server.post("api/users").send({
+                "name": "test",
+                "lastname": "tester",
+                "password": "test22",
+                "username": "testuser2"}).expect(200,done);
+        });
+    });
+
 
 describe("Get users while giving parameters", function () {
     it("Should return a json file and a 200 code", function (done) {
