@@ -67,9 +67,7 @@ module.exports.createRating = function (req,userId,callback) {
 };
 
 
-module.exports.getAllRatings = function (callback, limit) {
-    ratingModel.find(callback).limit(limit);
-};
+
 //has to go later
 module.exports.getRatings = function (id,imdb,callback) {
     ratingModel.find({userid: id,imdb: imdb}, function (err,doc) {

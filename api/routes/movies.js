@@ -29,7 +29,6 @@ router.get('/page/:page', function (req, res) {
  */
 function getMovies(req,res){
     token = req.headers['authorization'];
-
     jwt.verify(token, req.app.get('private-key'), function (err,decoded) {
         if(err){
             res.send(err,401).json({error:"Invalid token"});
@@ -47,20 +46,5 @@ function getMovies(req,res){
             });
         }
     });
-
-
-
-
 }
 
-
-//post movies HAS TO GO LATER
-router.post('', function (req, res) {
-    movie.createMovies(req.body,function (err, movies) {
-        if (err) {
-            res.send(err);
-        }else {
-            res.json(movies);
-        }
-    })
-});

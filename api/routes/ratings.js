@@ -34,18 +34,6 @@ router.post("/", function (req, res) {
 
 });
 
-//Has to go later
-router.get('', function (req, res) {
-    rater.getAllRatings( function (err, newRating) {
-        if (err) {
-            res.sendStatus(400);
-        }
-        else {
-            res.json(newRating);
-        }
-    })
-});
-
 
 /**
  * Get movies with their average rating without paging

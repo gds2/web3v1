@@ -81,16 +81,3 @@ module.exports.findMovieByImdb = function (imdb, callback) {
     });
 };
 
-//has to go
-module.exports.createMovies = function (movie, callback) {
-    try {
-        moviesModel.create(movie, callback);
-    }
-    catch (err) {
-        if (err.message === "ValidatorError") {
-
-        }
-    }
-
-};
-
