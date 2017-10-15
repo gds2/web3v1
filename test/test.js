@@ -386,7 +386,7 @@ describe("Start all the tests", function () {
     /**
      * Good weather tests for /auth
      */
-    describe("Test#45 Post a body with username and password to try to login", function () {
+    describe("Test#42 Post a body with username and password to try to login", function () {
         it("Should return a jasonwebtoken object containing an encrypted userId", function (done) {
             server.post("/auth").send({
                 "username": "Username",
@@ -399,7 +399,7 @@ describe("Start all the tests", function () {
      * Bad weather tests for /auth
      */
 
-    describe("Test#46 Post an empty body to /auth", function () {
+    describe("Test#43 Post an empty body to /auth", function () {
         it("Should return an error code 400 empty username or password", function (done) {
             server.post("/auth").send({
                 "username": "Username",
@@ -409,7 +409,7 @@ describe("Start all the tests", function () {
     });
 
 
-    describe("Test#47 Post a body without a username", function () {
+    describe("Test#44 Post a body without a username", function () {
         it("Should return an error code 400 empty username or password", function (done) {
             server.post("/auth").send({
                 "password": "123456"
@@ -418,7 +418,7 @@ describe("Start all the tests", function () {
     });
 
 
-    describe("Test#48 Post a body without a password", function () {
+    describe("Test#45 Post a body without a password", function () {
         it("Should return an error code 400 empty username or password", function (done) {
             server.post("/auth").send({
                 "username": "username"
@@ -426,7 +426,7 @@ describe("Start all the tests", function () {
         })
     });
 
-    describe("Test#49 Post a body without a username", function () {
+    describe("Test#46 Post a body without a username", function () {
         it("Should return an error code 40e username/password combination does not exist", function (done) {
             server.post("/auth").send({
                 "username": "wrongUsername",
@@ -436,7 +436,7 @@ describe("Start all the tests", function () {
     });
 
 
-    describe("Test#50 Post a body with correct username but wrong password", function () {
+    describe("Test#47 Post a body with correct username but wrong password", function () {
         it("Should return an error code 403 username/password combination does not exist", function (done) {
             server.post("/auth").send({
                 "username": "correctUsername",
