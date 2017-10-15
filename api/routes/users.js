@@ -23,7 +23,7 @@ function getUsers(req,res){
     token = req.headers['authorization'];
     jwt.verify(token, req.app.get('private-key'), function (err,decoded) {
         if(err){
-            res.send(err,401).json({error:"Invalid token"});
+            res.send(401);
         }else {
             user.getUsers(req,function (err, persons) {
                 if (err) {

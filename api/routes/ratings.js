@@ -35,7 +35,7 @@ router.post("/", function (req, res) {
 
 //Has to go later
 router.get('', function (req, res) {
-    rating.getAllRatings( function (err, newRating) {
+    rater.getAllRatings( function (err, newRating) {
         if (err) {
             res.sendStatus(400);
         }
@@ -65,7 +65,7 @@ function getAverage(req,res) {
         if(err){
             res.send(err,401).json({error:"Invalid token"});
         }else {
-            rating.getAverageRatings(req,function (err, newRating) {
+            rater.getAverageRatings(req,function (err, newRating) {
                 if (err) {
                     res.send(err,404);
                 }
@@ -92,7 +92,7 @@ router.delete('/:imdb', function (req, res) {
         if(err){
             res.send(err,401).json({error:"Invalid token"});
         }else {
-            rating.deleteRating(req,decoded._id,function (err, newRating) {
+            rater.deleteRating(req,decoded._id,function (err, newRating) {
                 if (err) {
                     res.send(err, 404);
                 }
@@ -115,7 +115,7 @@ router.get('/:imdb', function (req, res) {
         if(err){
             res.send(err,401).json({error:"Invalid token"});
         }else {
-            rating.getRating(req,decoded._id,function (err, newRating) {
+            rater.getRating(req,decoded._id,function (err, newRating) {
                 if (err) {
                     res.send(err, 404);
                 }
