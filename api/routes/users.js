@@ -37,7 +37,6 @@ function getUsers(req,res){
 }
 
 
-
 //Creating a new user
 router.post("", function (req, res) {
     user.createUser(req, function (err) {

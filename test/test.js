@@ -33,12 +33,13 @@ describe("Start all the tests", function () {
             }
         );
     });
+
     /**
      * Good weather tests for api/users
      */
 
     //Make sure the user doesnt already exist
-    describe("Post a full body to the users", function () {
+    describe("Test#1 Post a full body to the users", function () {
         it("Should return a json file and a 200 code", function (done) {
             server.post("api/users").send({
                 "name": "test",
@@ -50,7 +51,7 @@ describe("Start all the tests", function () {
         });
     });
     //Make sure the user doesnt exist
-    describe("Post a body without a prepostion to the users", function () {
+    describe("Test#2 Post a body without a prepostion to the users", function () {
         it("Should return a json file and a 200 code", function (done) {
             server.post("api/users").send({
                 "name": "test",
@@ -62,20 +63,20 @@ describe("Start all the tests", function () {
     });
 
 
-    describe("Get all of the users without sending parameters", function () {
+    describe("Test#3 Get all of the users without sending parameters", function () {
         it("Should return a json file", function (done) {
             server.get("api/users").set('Authorization', token).expect("Content-type", /json/).expect(200, done);
         });
     });
 
 
-    describe("Get users while giving parameters", function () {
+    describe("Test#4 Get users while giving parameters", function () {
         it("Should return a json file and a 200 code", function (done) {
             server.get("api/users?username=testuser").set('Authorization', token).expect("Content-type", /json/).expect(200, done);
         });
     });
 
-    describe("Get users by using paging", function () {
+    describe("Test#5 Get users by using paging", function () {
         it("Should return a json file and a 200 code", function (done) {
             server.get("api/users/page/1").set('Authorization', token).expect("Content-type", /json/).expect(200, done);
         });
@@ -87,7 +88,7 @@ describe("Start all the tests", function () {
      */
 
 
-    describe("Post  users without an username that already exists", function () {
+    describe("Test#5 Post users without an username that already exists", function () {
         it("Should return a 400 code", function (done) {
             server.post("api/users").set('Authorization', token).send({
                 "name": "test",
@@ -100,44 +101,44 @@ describe("Start all the tests", function () {
     });
 
 
-    describe("Get all of the users without a token", function () {
+    describe("Test#6 Get all of the users without a token", function () {
         it("Should return a 401 code", function (done) {
             server.get("api/users").expect(401, done);
         });
     });
 
-    describe("Get users while giving parameters of a user that doesnt exist", function () {
+    describe("Test#7 Get users while giving parameters of a user that doesnt exist", function () {
         it("Should return a json file and a 200 code", function (done) {
             server.get("api/users?username=bladhjsgdghjdfjdsbgfjdsfjdhs").set('Authorization', token).expect(404, done);
         });
     });
 
-    describe("Post an empty body to the users", function () {
+    describe("Test#7 Post an empty body to the users", function () {
         it("Should return a 400 code", function (done) {
             server.post("api/users").send({}).set('Accept', /application\/json/).set('Authorization', token).expect(400, done);
         });
     });
 
-    describe("Post a wrong type of body to the users", function () {
+    describe("Test#8 Post a wrong type of body to the users", function () {
         it("Should return a 400 code", function (done) {
             server.post("api/users").send(",,,,,,,,,,,}").set('Authorization', token).expect(400, done);
         });
     });
 
-    describe("Get users by using a letter instead of a number by paging", function () {
+    describe("Test#9 Get users by using a letter instead of a number by paging", function () {
         it("Should return a json file and a 200 code", function (done) {
             server.get("api/users/page/a").expect("Content-type", /json/).set('Authorization', token).expect(200, done);
         });
     });
 
-    describe("Try getting users from a page that doesnt have any users", function () {
+    describe("Test#10 Try getting users from a page that doesnt have any users", function () {
         it("Should return a 404 code", function (done) {
             server.get("api/users/page/1000000").set('Authorization', token).expect(404, done);
         });
     });
 
 
-    describe("Post a body without a password to the users", function () {
+    describe("Test#11 Post a body without a password to the users", function () {
         it("Should return a 400 code", function (done) {
             server.post("api/users").send({
                 "name": "test",
@@ -148,7 +149,7 @@ describe("Start all the tests", function () {
         });
     });
 
-    describe("Post a body without an username to the users", function () {
+    describe("Test#12 Post a body without an username to the users", function () {
         it("Should return a 400 code", function (done) {
             server.post("api/users").send({
                 "name": "test",
@@ -160,7 +161,7 @@ describe("Start all the tests", function () {
     });
 
 
-    describe("Post a body without a name to the users", function () {
+    describe("Test#13 Post a body without a first name to the users", function () {
         it("Should return a 400 code", function (done) {
             server.post("api/users").send({
                 "lastname": "tester",
@@ -171,7 +172,7 @@ describe("Start all the tests", function () {
         });
     });
 
-    describe("Post a body without a last name to the users", function () {
+    describe("Test#14 Post a body without a last name to the users", function () {
         it("Should return a 400 code", function (done) {
             server.post("api/users").send({
                 "name": "test",
@@ -186,7 +187,7 @@ describe("Start all the tests", function () {
      * Good weather tests for api/ratings
      */
 
-    describe("Post a full body to the ratings/update rating", function () {
+    describe("Test#15 Post a full body to the ratings/update rating", function () {
         it("Should return a 200 code", function (done) {
             server.post("api/ratings").send({
                 "rating": 5,
@@ -195,26 +196,26 @@ describe("Start all the tests", function () {
         });
     });
 
-    describe("Get a rating  for a movie the user rated before", function () {
+    describe("Test#16 Get a rating  for a movie the user rated before", function () {
         it("Should return a 200 code", function (done) {
             server.get("api/ratings/123").set('Accept', /application\/json/).set('Authorization', token).expect(200, done);
         });
     });
 
 
-    describe("get a list of average ratings", function () {
+    describe("Test#17 get a list of average ratings", function () {
         it("Should return a 200 code", function (done) {
             server.get("api/ratings/average").set('Authorization', token).expect("Content-type", /json/).expect(200, done);
         });
     });
 
-    describe("get a list of average ratings by using paging", function () {
+    describe("Test#18 get a list of average ratings by using paging", function () {
         it("Should return a 200 code", function (done) {
             server.get("api/ratings/average/page/1").set('Authorization', token).expect("Content-type", /json/).expect(200, done);
         });
     });
 
-    describe("Delete a rating", function () {
+    describe("Test#19 Delete a rating", function () {
         it("Should return a 200 code", function (done) {
             server.delete("api/ratings/123").set('Authorization', token).expect(200, done);
         });
@@ -224,7 +225,7 @@ describe("Start all the tests", function () {
     /**
      * Bad weather tests for api/ratings
      */
-    describe("Post a full body to the ratings without a token", function () {
+    describe("Test#20 Post a full body to the ratings without a token", function () {
         it("Should return a 401 code", function (done) {
             server.post("api/ratings").send({
                 "rating": 5,
@@ -233,13 +234,13 @@ describe("Start all the tests", function () {
         });
     });
 
-    describe("Get a rating  for a movie the user hasnt rated before", function () {
+    describe("Test#21 Get a rating  for a movie the user hasnt rated before", function () {
         it("Should return a 200 code", function (done) {
             server.get("api/ratings/123030030454050405").set('Accept', /application\/json/).set('Authorization', token).expect(404, done);
         });
     });
 
-    describe("Post a rating to a movie that doesnt exist", function () {
+    describe("Test#22 Post a rating to a movie that doesnt exist", function () {
         it("Should return a 404 code", function (done) {
             server.post("api/ratings").send({
                 "rating": 5,
@@ -248,7 +249,7 @@ describe("Start all the tests", function () {
         });
     });
 
-    describe("Post a rating that doesnt have an imdb", function () {
+    describe("Test#23 Post a rating that doesnt have an imdb", function () {
         it("Should return a 404 code", function (done) {
             server.post("api/ratings").send({
                 "rating": 5
@@ -256,7 +257,7 @@ describe("Start all the tests", function () {
         });
     });
 
-    describe("Post a rating that doesnt have a rating amount", function () {
+    describe("Test#24 Post a rating that doesnt have a rating amount", function () {
         it("Should return a 400 code", function (done) {
             server.post("api/ratings").send({
                 "imdb": "123"
@@ -264,51 +265,51 @@ describe("Start all the tests", function () {
         });
     });
 
-    describe("Post a wrong json format to the ratings", function () {
+    describe("Test#25 Post a wrong json format to the ratings", function () {
         it("Should return a 400 code", function (done) {
             server.post("api/ratings").set('Authorization', token).send(",,,,fds,fsf,sfsjkl;:::").set('Accept', /application\/json/).expect(400, done);
         });
     });
 
-    describe("Post an empty json  to the ratings", function () {
+    describe("Test#26 Post an empty json  to the ratings", function () {
         it("Should return a 400 code", function (done) {
             server.post("api/ratings").set('Authorization', token).send({}).set('Accept', /application\/json/).expect(400, done);
         });
     });
 
-    describe("get a list of average ratings without a token", function () {
+    describe("Test#27 get a list of average ratings without a token", function () {
         it("Should return a 401 code", function (done) {
             server.get("api/ratings/average").expect(401, done);
         });
     });
 
-    describe("try getting a list of average ratings by using a page that doenst exist", function () {
+    describe("Test#28 try getting a list of average ratings by using a page that doenst exist", function () {
         it("Should return a 404 code", function (done) {
             server.get("api/ratings/average/page/120000").set('Authorization', token).expect(404, done);
         });
     });
 
 
-    describe("try getting a list of average ratings by using a letter instead of a number at paging", function () {
+    describe("Test#29 try getting a list of average ratings by using a letter instead of a number at paging", function () {
         it("Should return a 200 code", function (done) {
             server.get("api/ratings/average/page/sdadadada").set('Authorization', token).expect("Content-type", /json/).expect(200, done);
         });
     });
 
-    describe("Delete a rating without a token", function () {
+    describe("Test#30 Delete a rating without a token", function () {
         it("Should return a 401 code", function (done) {
             server.delete("api/ratings/123").expect(401, done);
         });
     });
 
-    describe("Delete a rating that doesnt exist", function () {
+    describe("Test#31 Delete a rating that doesnt exist", function () {
         it("Should return a 404 code", function (done) {
             server.delete("api/ratings/123").set('Authorization', token).expect(404, done);
         });
     });
 
 
-    describe("Post a rating with the rating amount not being a number ", function () {
+    describe("Test#32 Post a rating with the rating amount not being a number ", function () {
         it("Should return a 400 code", function (done) {
             server.post("api/ratings").send({
                 "rating": "5",
@@ -318,8 +319,8 @@ describe("Start all the tests", function () {
     });
 
 
-    describe("Post a rating with the rating amount being lower than 0.5 ", function () {
-        it("Should return a 200 code", function (done) {
+    describe("Test#33 Post a rating with the rating amount being lower than 0.5 ", function () {
+        it("Should return a 400 code", function (done) {
             server.post("api/ratings").send({
                 "rating": 0.4,
                 "imdb": "123"
@@ -327,7 +328,7 @@ describe("Start all the tests", function () {
         });
     });
 
-    describe("Post a rating with the rating amount being higher than 5 ", function () {
+    describe("Test#34 Post a rating with the rating amount being higher than 5 ", function () {
         it("Should return a 200 code", function (done) {
             server.post("api/ratings").send({
                 "rating": 6,
@@ -339,19 +340,19 @@ describe("Start all the tests", function () {
     /**
      * Good weather tests for api/movies
      */
-    describe("Try getting the movies", function () {
+    describe("Test#35 Try getting the movies", function () {
         it("Should return a json file and a 200 code", function (done) {
             server.get("api/movies").expect("Content-type", /json/).set('Authorization', token).expect(200, done);
         });
     });
 
-    describe("Try getting the movies by using paging", function () {
+    describe("Test#36 Try getting the movies by using paging", function () {
         it("Should return a json file and a 200 code", function (done) {
             server.get("api/movies/page/1").expect("Content-type", /json/).set('Authorization', token).expect(200, done);
         });
     });
 
-    describe("Try getting the movies by using certain parameters in the url", function () {
+    describe("Test#37 Try getting the movies by using certain parameters in the url", function () {
         it("Should return a json file and a 200 code", function (done) {
             server.get("api/movies?imdb=123").expect("Content-type", /json/).set('Authorization', token).expect(200, done);
         });
@@ -361,61 +362,34 @@ describe("Start all the tests", function () {
     /**
      * Bad weather tests for api/movies
      */
-    describe("Try getting the movies without a token", function () {
+    describe("Test#38 Try getting the movies without a token", function () {
         it("Should return a 401 error Invalid token", function (done) {
             server.get("api/movies").expect(401, done);
         });
     });
 
-    describe("Try getting the movies by using a page that doesnt have any data", function () {
+    describe("Test#39 Try getting the movies by using a page that doesnt have any data", function () {
         it("Should return a json file and a 404 code", function (done) {
             server.get("api/movies/page/2323233").set('Authorization', token).expect(404, done);
         });
     });
 
-    describe("Try getting the movies by using a letter as a  page number", function () {
+    describe("Test#40 Try getting the movies by using a letter as a  page number", function () {
         it("Should return a json file and a 200 code", function (done) {
             server.get("api/movies/page/a").set('Authorization', token).expect("Content-type", /json/).expect(200, done);
         });
     });
 
-    describe("Try getting a movie that doest have the parameters in the url", function () {
+    describe("Test#41 Try getting a movie that doest have the parameters in the url", function () {
         it("Should return a json file and a 404 code", function (done) {
             server.get("api/movies?imdb=12233343534535343").set('Authorization', token).expect(404, done);
         });
     });
 
-
-    /**
-     * Bad weather tests for api/ratings
-     */
-    describe("Post an empty body to the ratings", function () {
-        it("Should return an error 400 saying that not all variables are defined", function (done) {
-            server.post("api/ratings").send({}).set('Authorization', token).expect(400, done);
-        });
-    });
-
-    describe("Post a body to the ratings with a rating higher than 5", function () {
-        it("Should return an error 400 Rating is not higher than 0.5 or lower than 5.1", function (done) {
-            server.post("api/ratings").send({
-                "userid": "tester",
-                "ratingAmount": "6",
-                "imdb": "123"
-            }).set('Accept', /application\/json/).set('Authorization', token).expect(400, done);
-        });
-    });
-
-    describe("Delete a rating by posting a userId but not an imdb id", function () {
-        it("Should return an 404 not found error", function (done) {
-            server.delete("api/ratings").send({
-                "userid": "tester"
-            }).set('Accept', /application\/json/).set('Authorization', token).expect(404, done);
-        });
-    });
     /**
      * Good weather tests for /auth
      */
-    describe("Post a body with username and password to try to login", function () {
+    describe("Test#45 Post a body with username and password to try to login", function () {
         it("Should return a jasonwebtoken object containing an encrypted userId", function (done) {
             server.post("/auth").send({
                 "username": "Username",
@@ -428,7 +402,7 @@ describe("Start all the tests", function () {
      * Bad weather tests for /auth
      */
 
-    describe("Post an empty body to /auth", function () {
+    describe("Test#46 Post an empty body to /auth", function () {
         it("Should return an error code 400 empty username or password", function (done) {
             server.post("/auth").send({
                 "username": "Username",
@@ -438,7 +412,7 @@ describe("Start all the tests", function () {
     });
 
 
-    describe("Post a body without a username", function () {
+    describe("Test#47 Post a body without a username", function () {
         it("Should return an error code 400 empty username or password", function (done) {
             server.post("/auth").send({
                 "password": "123456"
@@ -447,7 +421,7 @@ describe("Start all the tests", function () {
     });
 
 
-    describe("Post a body without a password", function () {
+    describe("Test#48 Post a body without a password", function () {
         it("Should return an error code 400 empty username or password", function (done) {
             server.post("/auth").send({
                 "username": "username"
@@ -455,7 +429,7 @@ describe("Start all the tests", function () {
         })
     });
 
-    describe("Post a body without a username", function () {
+    describe("Test#49 Post a body without a username", function () {
         it("Should return an error code 40e username/password combination does not exist", function (done) {
             server.post("/auth").send({
                 "username": "wrongUsername",
@@ -465,7 +439,7 @@ describe("Start all the tests", function () {
     });
 
 
-    describe("Post a body with correct username but wrong password", function () {
+    describe("Test#50 Post a body with correct username but wrong password", function () {
         it("Should return an error code 403 username/password combination does not exist", function (done) {
             server.post("/auth").send({
                 "username": "correctUsername",
