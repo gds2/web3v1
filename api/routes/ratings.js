@@ -84,16 +84,15 @@ router.get('/average/page/:page', function (req, res) {
 });
 
 /**
- * Needs to be edited with id from ticket
+ * Delete the rating for the given movie if the current user rated it before
  */
 router.delete('/:imdb', function (req, res) {
     token = req.headers['authorization'];
-
     jwt.verify(token, req.app.get('private-key'), function (err,decoded) {
         if(err){
             res.send(err,401).json({error:"Invalid token"});
         }else {
-            rating.deleteRating(req.params.imdb,decoded._id,function (err, newRating) {
+            rating.deleteRating(req,decoded._id,function (err, newRating) {
                 if (err) {
                     res.send(err, 404);
                 }
@@ -104,3 +103,27 @@ router.delete('/:imdb', function (req, res) {
         }
     });
 });
+
+
+
+/**
+ * Get the rating for the given movie if the current user rated it before
+ */
+router.get('/:imdb', function (req, res) {
+    token = req.headers['authorization'];
+    jwt.verify(token, req.app.get('private-key'), function (err,decoded) {
+        if(err){
+            res.send(err,401).json({error:"Invalid token"});
+        }else {
+            rating.getRating(req,decoded._id,function (err, newRating) {
+                if (err) {
+                    res.send(err, 404);
+                }
+                else {
+                    res.json(newRating);
+                }
+            });
+        }
+    });
+});
+

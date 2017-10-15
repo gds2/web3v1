@@ -146,7 +146,7 @@ module.exports.getAverageRatings = function (req,callback) {
  * @param callback
  */
 module.exports.deleteRating = function (req,id,callback) {
- var imdb = req.body.imdb;
+ var imdb = req.params.imdb;
     ratingModel.find({imdb: imdb, userid : id}, function (err,doc) {
         if(doc.length) {
             ratingModel.remove({imdb: imdb, userid: id}, callback);
@@ -157,3 +157,22 @@ module.exports.deleteRating = function (req,id,callback) {
     })
 };
 
+
+/**
+ * This function will get a rating by a user using the movie's imdb and the user's id
+ * @param req
+ * @param id
+ * @param callback
+ */
+module.exports.getRating = function (req,id,callback) {
+    var imdb = req.params.imdb;
+    ratingModel.find({imdb: imdb, userid : id}, function (err,doc) {
+        if (doc.length) {
+            callback(err, doc);
+        }
+        else {
+            callback("Rating not found");
+        }
+
+    })
+};
