@@ -74,7 +74,11 @@ module.exports.createUser = function (req, callback) {
 
 };
 
-
+/**
+ * Login with the given information
+ * @param req
+ * @param callback
+ */
 module.exports.loginUser = function (req, callback) {
     userModel.find({"username": req.body.username, "password" : req.body.password}, {
         "password" : 0,
