@@ -8,10 +8,11 @@ rater = require('../models/ratings.js');
 module.exports = router;
 
 
-//User id is used in create rating so do something with the ticket there
+/**
+ * Create a rating
+ */
 router.post("/", function (req, res) {
     token = req.headers['authorization'];
-
     jwt.verify(token, req.app.get('private-key'), function (err,decoded) {
         if(err){
             res.send(err,401).json({error:"Invalid token"});

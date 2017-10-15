@@ -8,17 +8,25 @@ movie = require('../models/movies.js');
 module.exports = router;
 
 
-///GET movies without paging
+/**
+ * GET movies without paging
+ */
 router.get('', function (req, res) {
     getMovies(req,res);
 });
 
-///GET movies with paging
+/**
+ * GET movies with paging
+ */
 router.get('/page/:page', function (req, res) {
     getMovies(req,res);
 });
 
-//Function for getting the movies
+/**
+ * Function for getting the movies
+ * @param req
+ * @param res
+ */
 function getMovies(req,res){
     token = req.headers['authorization'];
 

@@ -5,7 +5,9 @@ var jwt = require("jsonwebtoken");
 user = require('../models/users.js');
 module.exports = router;
 
-//Login in the system using a username and a password to get a token containing an encoded userId
+/**
+ * Login in the system using a username and a password to get a token containing an encoded userId
+ */
 router.post("/", function (req,res) {
     if(req.body.username !== undefined || req.body.password !== undefined){
         user.loginUser(req, function (err, userObject) {

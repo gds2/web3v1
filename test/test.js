@@ -1,7 +1,4 @@
-//var should = require("should");
 request = require("request");
-//var expect = require("chai").expect;
-//var util = require("utill");
 var express = require('express');
 var supertest = require('supertest');
 var bodyParser = require('body-parser');

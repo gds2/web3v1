@@ -8,17 +8,25 @@ user = require('../models/users.js');
 module.exports = router;
 
 
-//Get persons with paging
+/**
+ * //Get users with paging
+ */
 router.get('/page/:page',function (req, res) {
     getUsers(req,res);
 });
 
-//GET persons without paging
+/**
+ * Get users without paging
+ */
 router.get("",function (req, res) {
     getUsers(req,res);
 });
 
-//Function for getting the users
+/**
+ * Function for getting the users
+ * @param req
+ * @param res
+ */
 function getUsers(req,res){
     token = req.headers['authorization'];
     jwt.verify(token, req.app.get('private-key'), function (err,decoded) {
@@ -37,7 +45,9 @@ function getUsers(req,res){
 }
 
 
-//Creating a new user
+/**
+ * Creating a new user
+ */
 router.post("", function (req, res) {
     user.createUser(req, function (err) {
         //Send a 400 code if an error occured
