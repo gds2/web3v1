@@ -20,8 +20,8 @@ describe("Start all the tests", function () {
             'http://localhost:3000/auth',
             {
                 json: {
-                    "username": "testuser",
-                    "password": "test22"
+                    "username": "tester1",
+                    "password": "tester1"
                 }
             },
             function (error, response, body) {
@@ -42,7 +42,7 @@ describe("Start all the tests", function () {
                 "name": "test",
                 "lastname": "tester",
                 "preposition": "de",
-                "password": "test22",
+                "password": "test2222",
                 "username": "testuser"
             }).expect(200, done);
         });
@@ -388,9 +388,9 @@ describe("Start all the tests", function () {
      */
     describe("Test#43 Post a body with username and password to try to login", function () {
         it("Should return a jasonwebtoken object containing an encrypted userId", function (done) {
-            server.post("/auth").send({
-                "username": "Username",
-                "password": "123456"
+            server.post("auth").send({
+                "username": "tester1",
+                "password": "tester1"
             }).set('Accept', /application\/json/).set('Authorization', token).expect(201, done);
         })
     });
@@ -401,18 +401,15 @@ describe("Start all the tests", function () {
 
     describe("Test#44 Post an empty body to /auth", function () {
         it("Should return an error code 400 empty username or password", function (done) {
-            server.post("/auth").send({
-                "username": "Username",
-                "password": "123456"
-            }).set('Accept', /application\/json/).expect(400, done);
+            server.post("auth").send({}).set('Accept', /application\/json/).expect(400, done);
         })
     });
 
 
     describe("Test#45 Post a body without a username", function () {
         it("Should return an error code 400 empty username or password", function (done) {
-            server.post("/auth").send({
-                "password": "123456"
+            server.post("auth").send({
+                "password": "tester1"
             }).set('Accept', /application\/json/).expect(400, done);
         })
     });
@@ -420,27 +417,27 @@ describe("Start all the tests", function () {
 
     describe("Test#46 Post a body without a password", function () {
         it("Should return an error code 400 empty username or password", function (done) {
-            server.post("/auth").send({
-                "username": "username"
+            server.post("auth").send({
+                "username": "tester1"
             }).set('Accept', /application\/json/).expect(400, done);
         })
     });
 
-    describe("Test#47 Post a body without a username", function () {
-        it("Should return an error code 40e username/password combination does not exist", function (done) {
-            server.post("/auth").send({
-                "username": "wrongUsername",
-                "password": "correctPassword"
-            }).set('Accept', /application\/json/).expect(400, done);
+    describe("Test#47 Post a body with correct password but wrong username", function () {
+        it("Should return an error code 403 username/password combination does not exist", function (done) {
+            server.post("auth").send({
+                "username": "tester2",
+                "password": "tester1"
+            }).set('Accept', /application\/json/).expect(403, done);
         })
     });
 
 
     describe("Test#48 Post a body with correct username but wrong password", function () {
         it("Should return an error code 403 username/password combination does not exist", function (done) {
-            server.post("/auth").send({
-                "username": "correctUsername",
-                "password": "wrongPassword"
+            server.post("auth").send({
+                "username": "tester1",
+                "password": "tester2"
             }).set('Accept', /application\/json/).expect(403, done);
         })
     });
