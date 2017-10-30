@@ -26,6 +26,10 @@ var movieSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true
+    },
+    img_url:{
+        type: String,
+        required: true
     }
 });
 /**
@@ -81,3 +85,6 @@ module.exports.findMovieByImdb = function (imdb, callback) {
     });
 };
 
+module.exports.createMovie = function (req, callback) {
+    moviesModel.create(req.body, callback);
+};

@@ -15,7 +15,18 @@ app.use(bodyParser.json());
 //Key for validation
 app.set('private-key', 'takesian-deSwart');
 
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
 
+//app.configure(function() {
+    //app.use(allowCrossDomain);
+    //some other code
+//});
 
 // Routes
 app.use('/auth', require('./api/routes/auth.js'));
@@ -31,3 +42,4 @@ app.get('/', function (req,res) {
 app.listen(3000);
 //Log that the server is running on port 3000
 console.log('Api on 3000');
+

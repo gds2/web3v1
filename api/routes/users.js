@@ -34,14 +34,15 @@ function getUsers(req,res){
             res.send(401);
         }else {
             user.getUsers(req,function (err, persons) {
-                if (err) {
-                    res.send(err,404);
-                }else {
-                    res.json(persons);
-                }
-            });
+        if (err) {
+            res.send(err,404);
+        }else {
+            res.json(persons);
         }
     });
+        }
+    });
+
 }
 
 

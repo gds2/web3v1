@@ -46,5 +46,40 @@ function getMovies(req,res){
             });
         }
     });
+
 }
 
+/**
+ * Function for finding a movie using its imdb id
+ */
+router.get('/:imdb', function (req, res) {
+    token = req.headers['authorization'];
+    jwt.verify(token, req.app.get('private-key'), function (err,decoded) {
+        if(err){
+            res.send(err,401).json({error:"Invalid token"});
+        }else {
+            movie.findMovieByImdb(decoded._id,function (err, resMovie) {
+                if (err) {
+                    res.send(err, 404);
+                }
+                else {
+                    res.json(resMovie);
+                }
+            });
+        }
+    });
+});
+
+//add movie
+router.post("", function (req, res) {
+    movie.createMovie(req, function (err) {
+        //Send a 400 code if an error occured
+        if (err) {
+            res.send(400, err);
+        }
+        //Send a 200 code if everything went right
+        else {
+            res.sendStatus(200);
+        }
+    })
+});

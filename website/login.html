@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<!-- Bootstrap core CSS -->
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="assets/style.css" rel="stylesheet">
+		<title>Login</title>
+	</head>
+	<body onload="logIn();">
+		<div class="container">
+			<header>
+				<!-- Header included -->
+			</header>
+			<div class="row">
+				<div class="col-md-2"></div>
+				<div class="col-md-8">
+					<img src="resources/img/login.png" class="img-responsive" alt="Notflix image">	
+					<div class="row">
+						<div class="col-md-4"></div>
+						<div class="col-md-4">
+							<h1 class="h1-centered font-notflix">Login</h1><br/>
+							<div class="form-group">
+								<form action="#" id="LoginForm" class="login-form form-center" method="POST">
+									<label for="username">Username</label>
+									<input type="text" class="form-control form-control-center" name="username" id="username" placeholder="Username" required/><br/>
+									
+									<label for="password">Password</label>
+									<input type="password" class="form-control form-control-center" name="password" id="password" placeholder="Password" required/><br/>
+									
+									<input type="submit" class="btn btn-primary form-button-full-width btn-notflix" value="Login">
+								</form><br/>
+								<div id="error_log"></div>
+							</div>
+							
+						</div>
+						<div class="col-md-4"></div>
+					</div>
+				</div>
+				<div class="col-md-2"></div>
+			</div>
+			<footer class="fixed-bottom">
+				<p class="m-0 text-center">Copyright &copy; Tavet Takesian & Govert de Swart 2017</p>
+			</footer>
+		</div>
+		<script src="assets/jquery/jquery.min.js"></script>
+		<script src="assets/jquery/jquery-cookie/src/jquery.cookie.js"></script>
+    	<script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    	<script src="assets/js.js"></script>
+	</body>
+</html>

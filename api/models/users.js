@@ -2,7 +2,6 @@
  *The model for the users
  */
 var mongoose = require('mongoose');
-//const bcrypt = require('bcrypt');
 
 var userSchema = new mongoose.Schema({
     name: {
@@ -89,18 +88,7 @@ module.exports.loginUser = function (req, callback) {
     }, function (err, doc) {
         if (doc.length) {
             var a = JSON.parse(JSON.stringify(doc));
-            //var hashedPassword = a[0].password;
-            //Compare passwords
-            //bcrypt.compare(password, hashedPassword, function(err, res) {
-                //if(res) {
-                    // Passwords match
-                   // a[0].password = 0;
-                    callback(err, a[0]);
-               // } else {
-                    // Passwords don't match
-                    //callback(403);
-               // }
-            //});
+            callback(err, a[0]);
         }
         else {
             callback(403);

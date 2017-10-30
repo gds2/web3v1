@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var jwt = require("jsonwebtoken");
-//var passwordHash = require('password-hash');
 user = require('../models/users.js');
 
 module.exports = router;
