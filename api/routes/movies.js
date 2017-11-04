@@ -58,7 +58,7 @@ router.get('/:imdb', function (req, res) {
         if(err){
             res.send(err,401).json({error:"Invalid token"});
         }else {
-            movie.findMovieByImdb(decoded._id,function (err, resMovie) {
+            movie.findMovieByImdb(req,function (err, resMovie) {
                 if (err) {
                     res.send(err, 404);
                 }

@@ -101,7 +101,7 @@ module.exports.getAverageRatings = function (req,callback) {
                 "$group": {
                     "_id": "$_id",
                     "movie": {"$push": "$movie"},
-                    "average rating": {"$avg": "$rating"}
+                    "average_rating": {"$avg": "$rating"}
                 }
             },
             {"$limit": pageEnd},
@@ -124,7 +124,7 @@ module.exports.getAverageRatings = function (req,callback) {
                 "$group": {
                     "_id": "$_id",
                     "movie": {"$push": "$movie"},
-                    "average rating": {"$avg": "$rating"}
+                    "average_rating": {"$avg": "$rating"}
                 }
             }, function (err, doc) {
                 if (doc.length) {
@@ -165,6 +165,20 @@ module.exports.deleteRating = function (req,id,callback) {
 module.exports.getRating = function (req,id,callback) {
     var imdb = req.params.imdb;
     ratingModel.find({imdb: imdb, userid : id}, function (err,doc) {
+        if (doc.length) {
+            callback(err, doc);
+        }
+        else {
+            callback("Rating not found");
+        }
+
+    })
+};
+
+
+module.exports.getSingleMovieRating = function (req,callback) {
+    var imdb = req.params.imdb;
+    ratingModel.find({imdb: imdb}, function (err,doc) {
         if (doc.length) {
             callback(err, doc);
         }

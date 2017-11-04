@@ -31,7 +31,6 @@ router.post("/", function (req, res) {
             });
         }
     });
-
 });
 
 
@@ -96,8 +95,10 @@ router.delete('/:imdb', function (req, res) {
 
 
 /**
- * Get the rating for the given movie if the current user rated it before
+ * Get the rating for the given movie if the current user rated it before(show own rating of the given movie)
  */
+
+/*
 router.get('/:imdb', function (req, res) {
     token = req.headers['authorization'];
     jwt.verify(token, req.app.get('private-key'), function (err,decoded) {
@@ -115,4 +116,22 @@ router.get('/:imdb', function (req, res) {
         }
     });
 });
+*/
 
+router.get('/:imdb', function (req, res) {
+    token = req.headers['authorization'];
+    jwt.verify(token, req.app.get('private-key'), function (err,decoded) {
+        if(err){
+            res.send(err,401).json({error:"Invalid token"});
+        }else {
+            rater.getSingleMovieRating(req,function (err, newRating) {
+                if (err) {
+                    res.send(err, 404);
+                }
+                else {
+                    res.json(newRating);
+                }
+            });
+        }
+    });
+});

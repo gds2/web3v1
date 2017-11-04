@@ -23,10 +23,6 @@ app.use(function(req, res, next) {
     next();
 });
 
-//app.configure(function() {
-    //app.use(allowCrossDomain);
-    //some other code
-//});
 
 // Routes
 app.use('/auth', require('./api/routes/auth.js'));

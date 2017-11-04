@@ -69,8 +69,10 @@ module.exports.getMovies = function (req, callback) {
  * @param callback
  */
 module.exports.findMovieByImdb = function (imdb, callback) {
+
+    var id = imdb.params.imdb;
     //Get the movies. Password is zero for if a hacker tries to be smart
-    movie.find({"imdb" : imdb}, {"password": 0}, function (err, doc) {
+    movie.find({"imdb" : id}, {"password": 0}, function (err, doc) {
         if(typeof doc !== 'undefined') {
             if (doc.length) {
                 callback(err, doc);

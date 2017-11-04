@@ -90,12 +90,18 @@ body {
 .register-image{
 	max-width: 250px;
 }
+
 /* Movies page */
+.movies-container{
+	width: 80%;
+}
+
 .single-movie{
 	margin: 10px;
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
+	min-width: 253px;
 	height: 300px;
 	padding: 0px;
 }

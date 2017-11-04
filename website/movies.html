@@ -1,42 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="In this page you can find all of our movies.">
+    <meta name="author" content="Tavet Takesian & Govert de Swart">
 
     <title>NotFlix Movies</title>
     <!-- Bootstrap core CSS -->
     <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <!-- Custom styles for this template -->
     <link href="assets/style.css" rel="stylesheet">
-
   </head>
   <body id="moviesBody" onload="loadMovies();">
-		
+
     <header id="header">
         <!-- content/header.html is included with jquery -->
     </header>
-    <!-- Page Content -->
-    <div class="container">
 
+    <div class="container">
       <div class="row">
         <div class="col-md-8">
           <h1 class="mt-4 font-notflix">MOVIES</h1>
           <hr>
-
-          <!-- Preview Image -->
           <img class="img-fluid rounded" src="resources/img/login.png" alt="Notflix home">
-
-          
-				</div>
-				
-				<!-- Search Widget -->
-				<div class="col-md-4">
-          
+        </div>
+        <div class="col-md-4">
           <div class="card my-4">
             <h5 class="card-header font-notflix">Search</h5>
             <div class="card-body">
@@ -50,14 +40,13 @@
           </div>
         </div>
       </div>
-			<hr>
-			<!-- All movies -->
-			<div class="row" id="moviesContainer"></div>
-			
+      <hr>
     </div>
-    <!-- /.container -->
+    <div class="container-fluid movies-container">
 
-    <!-- Footer -->
+      <div class="row" id="moviesContainer"></div>
+    </div>
+
     <footer id="footer" class="py-5 bg-notflix">
         <!-- content/footer is included with jquery -->
     </footer>
